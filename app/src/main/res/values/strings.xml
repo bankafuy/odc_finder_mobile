@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ODC Finder</string>
+    <string name="nav_header_text">Judul Agak Besar</string>
+    <string name="nav_header_detail_text">Judul Kecil</string>
+    <string name="logout">Keluar</string>
+    <string name="about">Tentang</string>
+    <string name="profile">Profil</string>
+    <string name="list_odc">List ODC</string>
+    <string name="search_odc">Cari ODC</string>
+    <string name="home">Beranda</string>
+</resources>
