@@ -1,6 +1,7 @@
 package com.perusahaan.fullname.odcfinder;
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,7 +13,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -24,6 +27,12 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ActionBar actionBar;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 item.setChecked(true);
                 switch (item.getItemId()) {
                     case R.id.menu_home:
-//                        Toast.makeText(getApplicationContext(), "Menu Home", Toast.LENGTH_SHORT).show();
                         actionBar.setTitle("Home");
                         getSupportFragmentManager()
                                 .beginTransaction()
@@ -72,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
                                 .commit();
                         break;
                     case R.id.menu_about:
-//                        Toast.makeText(getApplicationContext(), "Menu About", Toast.LENGTH_SHORT).show();
                         actionBar.setTitle("About");
                         getSupportFragmentManager()
                                 .beginTransaction()
@@ -124,6 +131,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.toolbar_search:
+                Toast.makeText(getApplicationContext(), "Search", Toast.LENGTH_SHORT).show();
                 break;
         }
 
