@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.actionBar = getSupportActionBar();
 
-        if(actionBar != null) {
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
             actionBar.setTitle("Home");
