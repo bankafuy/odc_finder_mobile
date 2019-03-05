@@ -20,7 +20,11 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.perusahaan.fullname.odcfinder.model.Location;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -117,48 +121,17 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             }
         }
 
+        final List<Location> locations = populateData();
 
-    }
-
-    public class Location {
-        private String name;
-        private float latitude;
-        private float longitude;
-
-        public Location(String name, float latitude, float longitude) {
-            this.name = name;
-            this.latitude = latitude;
-            this.longitude = longitude;
+        for (Location loc : locations) {
+            Marker marker = this.googleMap.addMarker(new MarkerOptions()
+                    .position(
+                            new LatLng(loc.getLatitude(), loc.getLongitude()))
+                    .title(loc.getName()));
+            marker.showInfoWindow();
         }
 
-        public String getName() {
-            return name;
-        }
 
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public float getLatitude() {
-            return latitude;
-        }
-
-        public void setLatitude(float latitude) {
-            this.latitude = latitude;
-        }
-
-        public float getLongitude() {
-            return longitude;
-        }
-
-        public void setLongitude(float longitude) {
-            this.longitude = longitude;
-        }
-
-        @Override
-        public String toString() {
-            return name;// + ";" + latitude + ";" + longitude + ";";
-        }
     }
 
     private List<Location> populateData() {
