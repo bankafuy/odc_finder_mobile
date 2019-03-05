@@ -51,20 +51,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final AboutFragment aboutFragment = new AboutFragment();
+        final HomeFragment homeFragment = new HomeFragment();
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 item.setChecked(true);
-
                 switch (item.getItemId()) {
                     case R.id.menu_home:
                         Toast.makeText(getApplicationContext(), "Menu Home", Toast.LENGTH_SHORT).show();
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.frameContent, homeFragment)
+                                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+                                .commit();
                         break;
                     case R.id.menu_about:
                         Toast.makeText(getApplicationContext(), "Menu About", Toast.LENGTH_SHORT).show();
-                        final Intent intent = new Intent(MainActivity.this, AboutActivity.class);
-                        startActivity(intent);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.frameContent, aboutFragment)
+                                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+                                .commit();
                         break;
                     case R.id.menu_list:
                         Toast.makeText(getApplicationContext(), "Menu List", Toast.LENGTH_SHORT).show();
@@ -92,6 +102,13 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frameContent, homeFragment)
+                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+                .commit();
+
     }
 
     @Override
