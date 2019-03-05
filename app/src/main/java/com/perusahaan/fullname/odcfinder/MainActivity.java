@@ -23,6 +23,7 @@ import static android.content.DialogInterface.BUTTON_POSITIVE;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
                 item.setChecked(true);
                 switch (item.getItemId()) {
                     case R.id.menu_home:
-                        Toast.makeText(getApplicationContext(), "Menu Home", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "Menu Home", Toast.LENGTH_SHORT).show();
+                        actionBar.setTitle("Home");
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.frameContent, homeFragment)
@@ -70,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
                                 .commit();
                         break;
                     case R.id.menu_about:
-                        Toast.makeText(getApplicationContext(), "Menu About", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "Menu About", Toast.LENGTH_SHORT).show();
+                        actionBar.setTitle("About");
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.frameContent, aboutFragment)
@@ -100,11 +103,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ActionBar actionbar = getSupportActionBar();
+        this.actionBar = getSupportActionBar();
 
-        if(actionbar != null) {
-            actionbar.setDisplayHomeAsUpEnabled(true);
-            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+            actionBar.setTitle("Home");
         }
 
         getSupportFragmentManager()
@@ -159,5 +163,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         msgYesNo(MainActivity.this, "yakin?");
+    }
+
+    public void setTitleBar(String title) {
+        this.actionBar.setTitle(title);
     }
 }
