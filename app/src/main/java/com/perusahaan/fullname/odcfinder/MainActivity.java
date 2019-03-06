@@ -28,9 +28,14 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBar actionBar;
 
+    private boolean showSearch = true;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        if(showSearch) {
+            getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -73,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.menu_home:
                         actionBar.setTitle("Home");
+                        showSearch = true;
+                        invalidateOptionsMenu();
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.frameContent, homeFragment)
@@ -81,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.menu_about:
                         actionBar.setTitle("About");
+                        showSearch = false;
+                        invalidateOptionsMenu();
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.frameContent, aboutFragment)
