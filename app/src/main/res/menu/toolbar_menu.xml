@@ -5,6 +5,7 @@
         android:id="@+id/toolbar_search"
         android:orderInCategory="300"
         android:title="User"
+        app:actionViewClass="android.support.v7.widget.SearchView"
         android:icon="@drawable/ic_search_black_24dp"
         app:showAsAction="always|collapseActionView" />
 </menu>
