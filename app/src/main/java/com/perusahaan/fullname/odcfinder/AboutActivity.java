@@ -215,6 +215,14 @@ public class AboutActivity extends AppCompatActivity {
         sampleAdapter = new SampleAdapter(this, objectList, new SampleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(SampleObject object) {
+                ItemFragment itemFragment = ItemFragment.newInstance(object);
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.aboutFragment, itemFragment)
+                        .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+                        .commit();
+
                 Toast.makeText(getApplicationContext(), String.format("ID: %s", object.getId()), Toast.LENGTH_SHORT).show();
             }
         });
