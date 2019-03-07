@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.perusahaan.fullname.odcfinder.R;
 import com.perusahaan.fullname.odcfinder.model.SampleObject;
@@ -23,6 +24,12 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.ViewHolder
 
     private List<SampleObject> objectList = new ArrayList<>();
 
+    public interface OnItemClickListener {
+        void onItemClick(SampleObject object);
+    }
+
+    public OnItemClickListener listener;
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView txtTitle;
         private final TextView txtUserId;
@@ -33,6 +40,22 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.ViewHolder
             txtTitle = v.findViewById(R.id.txtOdcName);
             txtUserId = v.findViewById(R.id.txtUserId);
             txtCompleted = v.findViewById(R.id.txtCompleted);
+        }
+
+        public void bind(final SampleObject sampleObject, final OnItemClickListener listener) {
+
+            if(sampleObject != null) {
+                txtTitle.setText(String.valueOf(sampleObject.getTitle()));
+                txtUserId.setText(String.valueOf(sampleObject.getUserId()));
+                txtCompleted.setText(String.valueOf(sampleObject.isCompleted()));
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        listener.onItemClick(sampleObject);
+                    }
+                });
+            }
         }
 
         public TextView getTxtTitle() {
@@ -48,9 +71,10 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.ViewHolder
         }
     }
 
-    public SampleAdapter(Context context, List<SampleObject> lists) {
+    public SampleAdapter(Context context, List<SampleObject> lists, OnItemClickListener listener) {
         inflater = LayoutInflater.from(context);
         this.objectList = lists;
+        this.listener = listener;
     }
 
     @Override
@@ -62,13 +86,7 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(SampleAdapter.ViewHolder holder, int position) {
-        holder.getTxtTitle().setText(
-                objectList.get(position).getTitle());
-        holder.getTxtUserId().setText(
-                String.valueOf(objectList.get(position).getUserId()));
-        holder.getTxtCompleted().setText(
-                String.valueOf(objectList.get(position).isCompleted()));
-
+        holder.bind(objectList.get(position), listener);
     }
 
     @Override

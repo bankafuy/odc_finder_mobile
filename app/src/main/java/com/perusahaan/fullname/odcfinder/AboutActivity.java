@@ -212,7 +212,12 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     private void setupRecycler() {
-        sampleAdapter = new SampleAdapter(this, objectList);
+        sampleAdapter = new SampleAdapter(this, objectList, new SampleAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(SampleObject object) {
+                Toast.makeText(getApplicationContext(), String.format("ID: %s", object.getId()), Toast.LENGTH_SHORT).show();
+            }
+        });
         recyclerView.setAdapter(sampleAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
