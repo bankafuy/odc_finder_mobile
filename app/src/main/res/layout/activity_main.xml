@@ -22,6 +22,7 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
              />
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_height="0dp"
             android:layout_width="match_parent"
             android:fillViewport="true"
@@ -31,7 +32,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
-                android:minHeight="420dp"
                 android:orientation="vertical"
                 android:padding="4sp"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -109,6 +109,8 @@ public class SearchFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.odcRecyclerView);
 
+        recyclerView.setNestedScrollingEnabled(false);
+
         searchView = activity.findViewById(R.id.menu_search);
 
         fetchingJson("");
