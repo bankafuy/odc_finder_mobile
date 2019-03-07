@@ -1,11 +1,8 @@
 package com.perusahaan.fullname.odcfinder;
 
 import android.app.AlertDialog;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,7 +10,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBar actionBar;
 
-    private boolean showSearch = true;
+    private boolean showSearch = false;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -67,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final AboutFragment aboutFragment = new AboutFragment();
+        final SearchFragment searchFragment = new SearchFragment();
         final HomeFragment homeFragment = new HomeFragment();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -78,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.menu_home:
                         actionBar.setTitle("Home");
-                        showSearch = true;
+                        showSearch = false;
                         invalidateOptionsMenu();
                         getSupportFragmentManager()
                                 .beginTransaction()
@@ -90,11 +86,6 @@ public class MainActivity extends AppCompatActivity {
                         actionBar.setTitle("About");
                         showSearch = false;
                         invalidateOptionsMenu();
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.frameContent, aboutFragment)
-                                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
-                                .commit();
                         break;
                     case R.id.menu_list:
                         Toast.makeText(getApplicationContext(), "Menu List", Toast.LENGTH_SHORT).show();
@@ -107,7 +98,14 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Menu Profile", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.menu_search:
-                        Toast.makeText(getApplicationContext(), "Menu Search", Toast.LENGTH_SHORT).show();
+                        actionBar.setTitle("Pencarian...");
+                        showSearch = false;
+                        invalidateOptionsMenu();
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.frameContent, searchFragment)
+                                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+                                .commit();
                         break;
                 }
 
@@ -181,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        msgYesNo(MainActivity.this, "Yakin?");
+        msgYesNo(MainActivity.this, "yakin?");
     }
 
     public void setTitleBar(String title) {
