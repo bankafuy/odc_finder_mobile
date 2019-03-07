@@ -1,19 +1,16 @@
-package com.perusahaan.fullname.odcfinder;
+package com.perusahaan.fullname.odcfinder.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.perusahaan.fullname.odcfinder.R;
 import com.perusahaan.fullname.odcfinder.model.Location;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -21,6 +18,9 @@ import java.util.List;
  */
 
 public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
+
+    private LayoutInflater inflater;
+
     private List<Location> locationList = new ArrayList<>();
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -31,8 +31,8 @@ public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
         public ViewHolder(View v) {
             super(v);
             txtName = v.findViewById(R.id.txtOdcName);
-            txtLatitude = v.findViewById(R.id.txtLatitude);
-            txtLongitude = v.findViewById(R.id.txtLongitude);
+            txtLatitude = v.findViewById(R.id.txtUserId);
+            txtLongitude = v.findViewById(R.id.txtCompleted);
         }
 
         public TextView getTxtName() {
@@ -48,6 +48,10 @@ public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
         }
     }
 
+    public OdcAdapter(Context context, List<Location> lists) {
+        inflater = LayoutInflater.from(context);
+        this.locationList = lists;
+    }
 
     @Override
     public OdcAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

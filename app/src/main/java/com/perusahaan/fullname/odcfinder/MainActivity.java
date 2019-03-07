@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        msgYesNo(MainActivity.this, "yakin?");
+        msgYesNo(MainActivity.this, "Yakin?");
     }
 
     public void setTitleBar(String title) {
