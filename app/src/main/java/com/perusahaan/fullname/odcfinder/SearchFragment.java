@@ -117,10 +117,15 @@ public class SearchFragment extends Fragment {
     }
 
     private void fetchingJson(final String query) {
+        showSimpleProgressDialog(getActivity(), "Loading...","Fetching Json",false);
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET, LOCATION_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+
+                        removeSimpleProgressDialog();
+
                         try {
                             JSONArray responseJson = new JSONArray(response);
                             objectList = new LinkedList<>();
@@ -150,7 +155,7 @@ public class SearchFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -177,5 +182,40 @@ public class SearchFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
     }
 
+    public static void removeSimpleProgressDialog() {
+        try {
+            if (progressDialog != null) {
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                    progressDialog = null;
+                }
+            }
+        } catch (IllegalArgumentException ie) {
+            ie.printStackTrace();
+
+        } catch (RuntimeException re) {
+            re.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void showSimpleProgressDialog(Context context, String title,
+                                                String msg, boolean isCancelable) {
+        try {
+            if (progressDialog == null) {
+                progressDialog = ProgressDialog.show(context, title, msg);
+                progressDialog.setCancelable(isCancelable);
+            }
+
+            if (!progressDialog.isShowing()) {
+                progressDialog.show();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
