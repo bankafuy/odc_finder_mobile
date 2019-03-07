@@ -3,6 +3,7 @@ package com.perusahaan.fullname.odcfinder;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -54,6 +55,9 @@ public class AboutActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
+    private Handler handler = new Handler();
+    private String queryText = "";
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
@@ -74,8 +78,15 @@ public class AboutActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                fetchingJson(newText);
-                recyclerView.scrollToPosition(0);
+                handler.removeCallbacks(null);
+                queryText = newText;
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        fetchingJson(queryText);
+                        recyclerView.scrollToPosition(0);
+                    }
+                }, 1000);
                 return true;
             }
         });
