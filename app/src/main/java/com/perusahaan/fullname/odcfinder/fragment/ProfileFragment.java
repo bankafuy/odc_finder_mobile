@@ -1,4 +1,4 @@
-package com.perusahaan.fullname.odcfinder;
+package com.perusahaan.fullname.odcfinder.fragment;
 
 
 import android.os.Bundle;
@@ -7,14 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.perusahaan.fullname.odcfinder.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OdcViewFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
 
-    public OdcViewFragment() {
+    public ProfileFragment() {
         // Required empty public constructor
     }
 
@@ -23,7 +25,7 @@ public class OdcViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_odc_view, container, false);
+        return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
 }

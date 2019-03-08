@@ -1,4 +1,4 @@
-package com.perusahaan.fullname.odcfinder;
+package com.perusahaan.fullname.odcfinder.fragment;
 
 
 import android.Manifest;
@@ -21,6 +21,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.perusahaan.fullname.odcfinder.R;
 import com.perusahaan.fullname.odcfinder.model.LocationModel;
 
 import java.util.LinkedList;

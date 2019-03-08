@@ -1,10 +1,7 @@
 package com.perusahaan.fullname.odcfinder;
 
 
-import android.content.ClipData;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.perusahaan.fullname.odcfinder.model.SampleObject;
-
-import java.io.Serializable;
 
 public class ItemFragment extends Fragment {
 

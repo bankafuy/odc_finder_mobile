@@ -25,6 +25,11 @@ import android.widget.Toast;
 
 
 import com.perusahaan.fullname.odcfinder.Utils.CircleTransformation;
+import com.perusahaan.fullname.odcfinder.fragment.AboutFragment;
+import com.perusahaan.fullname.odcfinder.fragment.HomeFragment;
+import com.perusahaan.fullname.odcfinder.fragment.OdcViewFragment;
+import com.perusahaan.fullname.odcfinder.fragment.ProfileFragment;
+import com.perusahaan.fullname.odcfinder.fragment.SearchFragment;
 import com.squareup.picasso.Picasso;
 
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
@@ -78,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
 
         final SearchFragment searchFragment = new SearchFragment();
         final HomeFragment homeFragment = new HomeFragment();
+        final AboutFragment aboutFragment = new AboutFragment();
+        final ProfileFragment profileFragment = new ProfileFragment();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
 
@@ -107,19 +114,38 @@ public class MainActivity extends AppCompatActivity {
                                 .commit();
                         break;
                     case R.id.menu_about:
-                        actionBar.setTitle("About");
+                        actionBar.setTitle("Tentang");
                         showSearch = false;
                         invalidateOptionsMenu();
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.frameContent, aboutFragment)
+                                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+                                .commit();
                         break;
                     case R.id.menu_list:
-                        Toast.makeText(getApplicationContext(), "Menu List", Toast.LENGTH_SHORT).show();
+                        actionBar.setTitle("Daftar ODC");
+                        showSearch = false;
+                        invalidateOptionsMenu();
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.frameContent, searchFragment)
+                                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+                                .commit();
                         break;
                     case R.id.menu_logout:
                         Toast.makeText(getApplicationContext(), "Menu Logout", Toast.LENGTH_SHORT).show();
                         msgYesNo(MainActivity.this, "yakin?");
                         break;
                     case R.id.menu_profile:
-                        Toast.makeText(getApplicationContext(), "Menu Profile", Toast.LENGTH_SHORT).show();
+                        actionBar.setTitle("Profile");
+                        showSearch = false;
+                        invalidateOptionsMenu();
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.frameContent, profileFragment)
+                                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+                                .commit();
                         break;
                     case R.id.menu_search:
                         actionBar.setTitle("Pencarian...");

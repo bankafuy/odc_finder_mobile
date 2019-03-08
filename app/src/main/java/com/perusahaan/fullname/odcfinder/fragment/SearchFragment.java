@@ -1,4 +1,4 @@
-package com.perusahaan.fullname.odcfinder;
+package com.perusahaan.fullname.odcfinder.fragment;
 
 import android.app.ProgressDialog;
 import android.app.SearchManager;
@@ -26,6 +26,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.perusahaan.fullname.odcfinder.ItemFragment;
+import com.perusahaan.fullname.odcfinder.R;
 import com.perusahaan.fullname.odcfinder.adapter.SampleAdapter;
 import com.perusahaan.fullname.odcfinder.model.SampleObject;
 
