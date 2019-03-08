@@ -117,7 +117,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void fetchingJson(final String query) {
-        showSimpleProgressDialog(getActivity(), "Loading...","Fetching Json",false);
+        showSimpleProgressDialog(getActivity(), "Loading...","Please wait...",true);
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, LOCATION_URL,
                 new Response.Listener<String>() {
@@ -190,11 +190,6 @@ public class SearchFragment extends Fragment {
                     progressDialog = null;
                 }
             }
-        } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
-
-        } catch (RuntimeException re) {
-            re.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
