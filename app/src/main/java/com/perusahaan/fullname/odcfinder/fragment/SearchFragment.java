@@ -28,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.perusahaan.fullname.odcfinder.ItemFragment;
 import com.perusahaan.fullname.odcfinder.R;
+import com.perusahaan.fullname.odcfinder.Utils.MyUtils;
 import com.perusahaan.fullname.odcfinder.adapter.SampleAdapter;
 import com.perusahaan.fullname.odcfinder.model.SampleObject;
 
@@ -119,14 +120,14 @@ public class SearchFragment extends Fragment {
     }
 
     private void fetchingJson(final String query) {
-        showSimpleProgressDialog(getActivity(), "Loading...","Please wait...",true);
+        MyUtils.showSimpleProgressDialog(getActivity(), "Loading...","Please wait...",true);
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, LOCATION_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        removeSimpleProgressDialog();
+                        MyUtils.removeSimpleProgressDialog();
 
                         try {
                             JSONArray responseJson = new JSONArray(response);
@@ -182,37 +183,6 @@ public class SearchFragment extends Fragment {
         });
         recyclerView.setAdapter(sampleAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-    }
-
-    public static void removeSimpleProgressDialog() {
-        try {
-            if (progressDialog != null) {
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                    progressDialog = null;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void showSimpleProgressDialog(Context context, String title,
-                                                String msg, boolean isCancelable) {
-        try {
-            if (progressDialog == null) {
-                progressDialog = ProgressDialog.show(context, title, msg);
-                progressDialog.setCancelable(isCancelable);
-            }
-
-            if (!progressDialog.isShowing()) {
-                progressDialog.show();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 }

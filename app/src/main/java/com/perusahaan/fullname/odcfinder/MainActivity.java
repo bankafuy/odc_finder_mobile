@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.LocationManager;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 
 import com.perusahaan.fullname.odcfinder.Utils.CircleTransformation;
+import com.perusahaan.fullname.odcfinder.Utils.Constant;
 import com.perusahaan.fullname.odcfinder.fragment.AboutFragment;
 import com.perusahaan.fullname.odcfinder.fragment.HomeFragment;
 import com.perusahaan.fullname.odcfinder.fragment.OdcViewFragment;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBar actionBar;
 
     private boolean showSearch = false;
+    private SharedPreferences prefs;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -55,6 +58,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        prefs = this.getSharedPreferences("com.perusahaan.fullname.odcfinder", Context.MODE_PRIVATE);
+
+        boolean isLoggedIn = prefs.getBoolean(Constant.PREF_LOGIN, false);
+
+        if(!isLoggedIn) {
+            startActivityForResult(new Intent(this, LoginActivity.class), 1);
+        }
 
         checkPermissionAndEnableIt();
 
@@ -198,20 +210,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void msgYesNo(Context context, String message) {
-
-        DialogInterface.OnClickListener dialogListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case BUTTON_NEGATIVE:
-                        break;
-                    case BUTTON_POSITIVE:
-                        finish();
-                        System.exit(0);
-                        break;
-                }
-            }
-        };
+//
+//        DialogInterface.OnClickListener dialogListener = new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                switch (which) {
+//                    case BUTTON_NEGATIVE:
+//                        break;
+//                    case BUTTON_POSITIVE:
+//                        prefs.edit().putBoolean(Constant.PREF_LOGIN, false).apply();
+//                        finish();
+//                        System.exit(0);
+//                        break;
+//                }
+//            }
+//        };
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
         alertDialog.setTitle("Yakin ingin keluar dari aplikasi?")
@@ -219,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        prefs.edit().putBoolean(Constant.PREF_LOGIN, false).apply();
                         finish();
                         System.exit(0);
                     }
@@ -229,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        msgYesNo(MainActivity.this, "yakin?");
+        msgYesNo(MainActivity.this, "Yakin?");
     }
 
     public void setTitleBar(String title) {
