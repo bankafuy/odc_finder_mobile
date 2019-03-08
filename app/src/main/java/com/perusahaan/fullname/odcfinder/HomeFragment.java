@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.perusahaan.fullname.odcfinder.model.Location;
+import com.perusahaan.fullname.odcfinder.model.LocationModel;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -121,9 +119,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             }
         }
 
-        final List<Location> locations = populateData();
+        final List<LocationModel> locationModels = populateData();
 
-        for (Location loc : locations) {
+        for (LocationModel loc : locationModels) {
             Marker marker = this.googleMap.addMarker(new MarkerOptions()
                     .position(
                             new LatLng(loc.getLatitude(), loc.getLongitude()))
@@ -134,13 +132,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private List<Location> populateData() {
-        List<Location> list = new LinkedList<>();
+    private List<LocationModel> populateData() {
+        List<LocationModel> list = new LinkedList<>();
 
-        Location loc1 = new Location("jakarta", -6.2293184f, 106.84418f);
-        Location loc2 = new Location("bandung", -6.2254042f, 106.84774f);
-        Location loc3 = new Location("merak", -6.2234042f, 106.845274f);
-        Location loc4 = new Location("pandeglang", -6.2224042f, 106.8465274f);
+        LocationModel loc1 = new LocationModel("jakarta", -6.2293184f, 106.84418f);
+        LocationModel loc2 = new LocationModel("bandung", -6.2254042f, 106.84774f);
+        LocationModel loc3 = new LocationModel("merak", -6.2234042f, 106.845274f);
+        LocationModel loc4 = new LocationModel("pandeglang", -6.2224042f, 106.8465274f);
 
         list.add(loc1);
         list.add(loc2);

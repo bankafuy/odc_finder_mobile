@@ -21,9 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.perusahaan.fullname.odcfinder.adapter.OdcAdapter;
 import com.perusahaan.fullname.odcfinder.adapter.SampleAdapter;
-import com.perusahaan.fullname.odcfinder.model.Location;
 import com.perusahaan.fullname.odcfinder.model.SampleObject;
 
 import org.json.JSONArray;
@@ -113,7 +111,7 @@ public class AboutActivity extends AppCompatActivity {
 //
 //
 ////        locationList = populateDummy();
-////        odcAdapter.setLocationList(locationList);
+////        odcAdapter.setLocationModelList(locationList);
 
         recyclerView = findViewById(R.id.odcRecyclerView);
 //        layoutManager = recyclerView.getLayoutManager();
@@ -123,8 +121,8 @@ public class AboutActivity extends AppCompatActivity {
         fetchingJson("");
     }
 
-//    List<Location> populateDummy() {
-//        List<Location> locations = new LinkedList<>();
+//    List<LocationModel> populateDummy() {
+//        List<LocationModel> locations = new LinkedList<>();
 //
 //        for(int i = 0; i <= 20; i++) {
 //            // default: -6.2249809,106.8446636;
@@ -133,16 +131,16 @@ public class AboutActivity extends AppCompatActivity {
 //            float param = i * 0.004f;
 //            float param2 = i * 0.008f;
 //
-//            Location location = new Location("Location " + i, defaultLat + param, defaultLong + param2);
+//            LocationModel location = new LocationModel("LocationModel " + i, defaultLat + param, defaultLong + param2);
 //            locations.add(location);
 //        }
 //
 //        return locations;
 //    }
 
-//    List<Location> filter(String text) {
-//        List<Location> filteredLists = new LinkedList<>();
-//        for(Location location : locationList) {
+//    List<LocationModel> filter(String text) {
+//        List<LocationModel> filteredLists = new LinkedList<>();
+//        for(LocationModel location : locationList) {
 //            if(location.getName().toLowerCase().contains(text.toLowerCase())) {
 //                filteredLists.add(location);
 //            }

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.perusahaan.fullname.odcfinder.R;
-import com.perusahaan.fullname.odcfinder.model.Location;
+import com.perusahaan.fullname.odcfinder.model.LocationModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
 
-    private List<Location> locationList = new ArrayList<>();
+    private List<LocationModel> locationModelList = new ArrayList<>();
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView txtName;
@@ -48,9 +48,9 @@ public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
         }
     }
 
-    public OdcAdapter(Context context, List<Location> lists) {
+    public OdcAdapter(Context context, List<LocationModel> lists) {
         inflater = LayoutInflater.from(context);
-        this.locationList = lists;
+        this.locationModelList = lists;
     }
 
     @Override
@@ -63,25 +63,25 @@ public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(OdcAdapter.ViewHolder holder, int position) {
         holder.getTxtName().setText(
-                locationList.get(position).getName());
+                locationModelList.get(position).getName());
         holder.getTxtLatitude().setText(
-                String.valueOf(locationList.get(position).getLatitude()));
+                String.valueOf(locationModelList.get(position).getLatitude()));
         holder.getTxtLongitude().setText(
-                String.valueOf(locationList.get(position).getLongitude()));
+                String.valueOf(locationModelList.get(position).getLongitude()));
 
     }
 
     @Override
     public int getItemCount() {
-        return locationList.size();
+        return locationModelList.size();
     }
 
-    public void setLocationList(List<Location> locationList) {
-        this.locationList = null;
-        this.locationList = locationList;
+    public void setLocationModelList(List<LocationModel> locationModelList) {
+        this.locationModelList = null;
+        this.locationModelList = locationModelList;
     }
 
-    public List<Location> getLocationList() {
-        return this.locationList;
+    public List<LocationModel> getLocationModelList() {
+        return this.locationModelList;
     }
 }

@@ -4,12 +4,12 @@ package com.perusahaan.fullname.odcfinder.model;
  * Created by Full Name on 3/6/2019.
  */
 
-public class Location {
+public class LocationModel {
     private String name;
     private float latitude;
     private float longitude;
 
-    public Location(String name, float latitude, float longitude) {
+    public LocationModel(String name, float latitude, float longitude) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
