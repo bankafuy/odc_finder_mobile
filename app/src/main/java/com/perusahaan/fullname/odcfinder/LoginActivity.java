@@ -104,10 +104,11 @@ public class LoginActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-
+            MyUtils.showSimpleProgressDialog(this, "Judul Login", "Sabar 3 detik.", false);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    MyUtils.removeSimpleProgressDialog();
                     Random random = new Random();
                     int i = random.nextInt();
 
