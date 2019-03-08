@@ -20,10 +20,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
+
+import com.perusahaan.fullname.odcfinder.Utils.CircleTransformation;
+import com.squareup.picasso.Picasso;
 
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
@@ -78,6 +80,17 @@ public class MainActivity extends AppCompatActivity {
         final HomeFragment homeFragment = new HomeFragment();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        ImageView imgLogo = navigationView.getHeaderView(0).findViewById(R.id.logoDrawer);
+
+        if(imgLogo != null) {
+            Picasso.get()
+                    .load(R.drawable.img_profile)
+                    .transform(new CircleTransformation())
+                    .into(imgLogo);
+        }
+
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
