@@ -35,6 +35,9 @@
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputLayout
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@color/colorPrimary"
+                    android:backgroundTint="@color/colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -42,6 +45,9 @@
                         android:id="@+id/txtUsername"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColorHint="@color/colorPrimary"
+                        android:textColor="@color/colorPrimary"
+                        android:backgroundTint="@color/colorPrimary"
                         android:hint="@string/prompt_username"
                         android:inputType="text"
                         android:maxLines="1"
@@ -50,6 +56,9 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextAppearance="@color/colorPrimary"
+                    android:backgroundTint="@color/colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -62,6 +71,9 @@
                         android:imeActionLabel="@string/action_sign_in"
                         android:inputType="textPassword"
                         android:maxLines="1"
+                        android:textColorHint="@color/colorPrimary"
+                        android:textColor="@color/colorPrimary"
+                        android:backgroundTint="@color/colorPrimary"
                         android:singleLine="true" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -72,6 +84,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="@color/colorPrimary"
                     android:text="@string/action_sign_in"
                     android:textStyle="bold" />
 

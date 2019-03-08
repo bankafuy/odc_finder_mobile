@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.menu_logout:
                         Toast.makeText(getApplicationContext(), "Menu Logout", Toast.LENGTH_SHORT).show();
-                        msgYesNo(MainActivity.this, "yakin?");
+                        msgYesNo(MainActivity.this, "Yakin?");
                         break;
                     case R.id.menu_profile:
                         actionBar.setTitle("Profile");
@@ -210,21 +210,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void msgYesNo(Context context, String message) {
-//
-//        DialogInterface.OnClickListener dialogListener = new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                switch (which) {
-//                    case BUTTON_NEGATIVE:
-//                        break;
-//                    case BUTTON_POSITIVE:
-//                        prefs.edit().putBoolean(Constant.PREF_LOGIN, false).apply();
-//                        finish();
-//                        System.exit(0);
-//                        break;
-//                }
-//            }
-//        };
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
         alertDialog.setTitle("Yakin ingin keluar dari aplikasi?")
