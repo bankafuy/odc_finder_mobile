@@ -1,6 +1,8 @@
 package com.perusahaan.fullname.odcfinder;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -38,6 +40,10 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class LoginActivity extends AppCompatActivity {
+    @Override
+    public void onBackPressed() {
+        msgYesNo(this, "Yakin ingin keluar ?");
+    }
 
     private static final String LOCATION_URL = "https://jsonplaceholder.typicode.com/todos";
 
@@ -154,11 +160,30 @@ public class LoginActivity extends AppCompatActivity {
     private void onSuccess() {
         Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
         prefs.edit().putBoolean(Constant.PREF_LOGIN, true).apply();
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
     private void onFailed() {
         Toast.makeText(LoginActivity.this, "Login Failed.", Toast.LENGTH_SHORT).show();
     }
+
+    private void msgYesNo(Context context, String message) {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setTitle("Yakin ingin keluar dari aplikasi?")
+                .setMessage(message)
+                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        prefs.edit().putBoolean(Constant.PREF_LOGIN, false).apply();
+                        finish();
+                        System.exit(0);
+                    }
+                })
+                .setNegativeButton("Tidak", null)
+                .show();
+    }
+
 }
 

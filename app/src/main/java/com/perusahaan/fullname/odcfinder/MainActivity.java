@@ -38,6 +38,21 @@ import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 
 public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        boolean isLoggedIn = prefs.getBoolean(Constant.PREF_LOGIN, false);
+
+        if(!isLoggedIn) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
+
+        checkPermissionAndEnableIt();
+
+
+    }
 
     private DrawerLayout drawerLayout;
     private ActionBar actionBar;
@@ -59,13 +74,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         prefs = this.getSharedPreferences("com.perusahaan.fullname.odcfinder", Context.MODE_PRIVATE);
 
         boolean isLoggedIn = prefs.getBoolean(Constant.PREF_LOGIN, false);
 
         if(!isLoggedIn) {
-            startActivityForResult(new Intent(this, LoginActivity.class), 1);
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
 
         checkPermissionAndEnableIt();
@@ -209,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void msgYesNo(Context context, String message) {
+    private void msgYesNo(Context context, String message) {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
         alertDialog.setTitle("Yakin ingin keluar dari aplikasi?")
