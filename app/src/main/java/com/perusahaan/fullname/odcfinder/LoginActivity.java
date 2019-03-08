@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,31 +17,18 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.perusahaan.fullname.odcfinder.Utils.Constant;
 import com.perusahaan.fullname.odcfinder.Utils.MyUtils;
-import com.perusahaan.fullname.odcfinder.model.SampleObject;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.LinkedList;
 import java.util.Random;
 
 public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
-        msgYesNo(this, "Yakin ingin keluar ?");
+        msgYesNo(this);
     }
 
     private static final String LOCATION_URL = "https://jsonplaceholder.typicode.com/todos";
@@ -168,11 +154,11 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(LoginActivity.this, "Login Failed.", Toast.LENGTH_SHORT).show();
     }
 
-    private void msgYesNo(Context context, String message) {
+    private void msgYesNo(Context context) {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
         alertDialog.setTitle("Yakin ingin keluar dari aplikasi?")
-                .setMessage(message)
+                .setMessage("Yakin ingin keluar ?")
                 .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
