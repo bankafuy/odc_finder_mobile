@@ -35,6 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -103,12 +104,26 @@ public class LoginActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
 
-            prefs.edit().putBoolean(Constant.PREF_LOGIN, true).apply();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Random random = new Random();
+                    int i = random.nextInt();
+
+                    if(i % 2 == 0) {
+                        onSuccess();
+                    } else {
+                        onFailed();
+                    }
+
+                }
+            }, 3000);
+
+
+//            prefs.edit().putBoolean(Constant.PREF_LOGIN, true).apply();
 
 //            Intent intent = getIntent();
-            finish();
 
 //            StringRequest stringRequest = new StringRequest(Request.Method.GET, LOCATION_URL,
 //                new Response.Listener<String>() {
@@ -133,6 +148,16 @@ public class LoginActivity extends AppCompatActivity {
 //            RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
 //            requestQueue.add(stringRequest);
         }
+    }
+
+    private void onSuccess() {
+        Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
+        prefs.edit().putBoolean(Constant.PREF_LOGIN, true).apply();
+        finish();
+    }
+
+    private void onFailed() {
+        Toast.makeText(LoginActivity.this, "Login Failed.", Toast.LENGTH_SHORT).show();
     }
 }
 
