@@ -1,6 +1,7 @@
 package com.perusahaan.fullname.odcfinder;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -165,14 +166,18 @@ public class MainActivity extends AppCompatActivity {
                         msgYesNo(MainActivity.this, "Yakin?");
                         break;
                     case R.id.menu_profile:
-                        actionBar.setTitle("Profile");
-                        showSearch = false;
-                        invalidateOptionsMenu();
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.frameContent, profileFragment)
-                                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
-                                .commit();
+                        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                        startActivity(intent, ActivityOptions
+                                .makeCustomAnimation(MainActivity.this, R.anim.swipe_left, R.anim.swipe_left_back)
+                                .toBundle());
+//                        actionBar.setTitle("Profile");
+//                        showSearch = false;
+//                        invalidateOptionsMenu();
+//                        getSupportFragmentManager()
+//                                .beginTransaction()
+//                                .replace(R.id.frameContent, profileFragment)
+//                                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+//                                .commit();
                         break;
                     case R.id.menu_search:
                         actionBar.setTitle("Pencarian...");
