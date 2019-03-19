@@ -45,6 +45,8 @@ public class ProfileActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButton;
     private ImageView imgProfile;
 
+    private boolean editMode;
+
     private final int CHOOSE_IMAGE = 666;
 
     private final String KEYWORD_IMAGE_PROFILE = "imgProfile";
@@ -52,7 +54,21 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_profile, menu);
+
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        MenuItem menuSave = menu.findItem(R.id.toolbar_save);
+        menuSave.setVisible(editMode);
+
+        MenuItem menuEdit = menu.findItem(R.id.toolbar_edit);
+        menuEdit.setVisible(!editMode);
+
+        return true;
+//        return super.onPrepareOptionsMenu(menu);
     }
 
     private void toggleEditButton() {
@@ -78,6 +94,14 @@ public class ProfileActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.toolbar_edit:
                 toggleEditButton();
+                editMode = true;
+                invalidateOptionsMenu();
+                return true;
+
+            case R.id.toolbar_save:
+                toggleEditButton();
+                editMode = false;
+                invalidateOptionsMenu();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -137,20 +161,6 @@ public class ProfileActivity extends AppCompatActivity {
                         .load(data.getData())
                         .resize(1366, 768)
                         .into(imgProfile);
-
-//                try  {
-//                    InputStream stream = getContentResolver().openInputStream(data.getData());
-//
-//                    Bitmap realImage = BitmapFactory.decodeStream(stream);
-//
-//                    Bitmap resizedBitmap = getResizedBitmap(realImage, 600, 1200);
-//
-//                    imgProfile.setImageBitmap(resizedBitmap);
-
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
             }
         }
 

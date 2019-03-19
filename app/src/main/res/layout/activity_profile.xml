@@ -32,9 +32,10 @@
                 <ImageView
                     android:id="@+id/imgProfile"
                     android:layout_width="match_parent"
-                    android:layout_height="240dp"
-                    android:src="@drawable/ic_account_circle_black_24dp"
-                    android:scaleType="fitXY" />
+                    android:layout_height="200dp"
+                    android:src="@drawable/img_profile"
+                    android:scaleType="fitXY"
+                    android:contentDescription="@string/about" />
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbarProfile"
@@ -59,7 +60,7 @@
             app:layout_anchor="@id/collapsing_toolbar"
             app:layout_anchorGravity="bottom|end"
             android:layout_margin="16dp"
-            app:srcCompat="@drawable/ic_edit_black_24dp"
+            app:srcCompat="@drawable/ic_camera_alt_black_24dp"
             android:focusable="true" />
 
         <ScrollView

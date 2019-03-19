@@ -5,6 +5,13 @@
         android:id="@+id/toolbar_edit"
         android:orderInCategory="300"
         android:icon="@drawable/ic_edit_black_24dp"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="Edit" />
+
+    <item
+        android:id="@+id/toolbar_save"
+        android:orderInCategory="300"
+        android:icon="@drawable/ic_done_black_24dp"
+        app:showAsAction="ifRoom"
+        android:title="Save" />
 </menu>
