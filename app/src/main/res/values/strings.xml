@@ -13,9 +13,10 @@
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDwAYkPssy2f_E1QFoiigveZdwPabY5fdY</string>
     <string name="title_activity_login">Login</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_username">Username</string>
+    <!-- Strings Profile -->
+    <string name="prompt_username"><b>Username</b></string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_name"><b>Name</b></string>
     <string name="action_sign_in">Login</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>

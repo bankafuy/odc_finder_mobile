@@ -15,6 +15,15 @@ public class UserModel implements Parcelable {
     private String level;
     private String photo;
 
+    public UserModel(Integer id, String username, String password, String nama, String level, String photo) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.nama = nama;
+        this.level = level;
+        this.photo = photo;
+    }
+
     protected UserModel(Parcel in) {
         if (in.readByte() == 0) {
             id = null;
