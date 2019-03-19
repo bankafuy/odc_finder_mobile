@@ -8,6 +8,7 @@ import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
@@ -30,6 +31,8 @@ import android.widget.Toast;
 
 import com.perusahaan.fullname.odcfinder.databinding.ActivityProfileBinding;
 import com.perusahaan.fullname.odcfinder.model.UserModel;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -130,25 +133,33 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK) {
             if(requestCode == CHOOSE_IMAGE) {
+                Picasso.get()
+                        .load(data.getData())
+                        .resize(1366, 768)
+                        .into(imgProfile);
 
-                try  {
-                    InputStream stream = getContentResolver().openInputStream(data.getData());
+//                try  {
+//                    InputStream stream = getContentResolver().openInputStream(data.getData());
+//
+//                    Bitmap realImage = BitmapFactory.decodeStream(stream);
+//
+//                    Bitmap resizedBitmap = getResizedBitmap(realImage, 600, 1200);
+//
+//                    imgProfile.setImageBitmap(resizedBitmap);
 
-                    Bitmap realImage = BitmapFactory.decodeStream(stream);
-
-                    Bitmap resizedBitmap = getResizedBitmap(realImage, 600, 1200);
-
-                    imgProfile.setImageBitmap(resizedBitmap);
-
-                    getPreferences(MODE_PRIVATE).edit()
-                            .putString(KEYWORD_IMAGE_PROFILE, encodeToBase64(resizedBitmap))
-                            .apply();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
         }
+
+        // save to shared preferences
+        BitmapDrawable drawable = (BitmapDrawable) imgProfile.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        getPreferences(MODE_PRIVATE).edit()
+                .putString(KEYWORD_IMAGE_PROFILE, encodeToBase64(bitmap))
+                .apply();
     }
 
     public static String encodeToBase64(Bitmap image) {
