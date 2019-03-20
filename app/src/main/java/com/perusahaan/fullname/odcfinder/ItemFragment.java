@@ -8,15 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.perusahaan.fullname.odcfinder.model.LocationModel;
 import com.perusahaan.fullname.odcfinder.model.SampleObject;
 
 public class ItemFragment extends Fragment {
 
     private static String ITEM_KEY = "item_key";
-    private SampleObject sampleObject;
+    private LocationModel locationModel;
     private TextView txtCompleted;
 
-    public static ItemFragment newInstance(SampleObject sampleObject) {
+    public static ItemFragment newInstance(LocationModel sampleObject) {
         ItemFragment itemFragment = new ItemFragment();
 
         Bundle bundle = new Bundle();
@@ -31,9 +32,9 @@ public class ItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        sampleObject = (SampleObject) getArguments().getSerializable(ITEM_KEY);
+        locationModel = (LocationModel) getArguments().getSerializable(ITEM_KEY);
 
-        SampleObject parcelable = getArguments().getParcelable(ITEM_KEY);
+        LocationModel parcelable = getArguments().getParcelable(ITEM_KEY);
 
 
         // Inflate the layout for this fragment
@@ -43,7 +44,7 @@ public class ItemFragment extends Fragment {
 
         if(parcelable != null) {
 
-            txtCompleted.setText(parcelable.getTitle());
+            txtCompleted.setText(parcelable.getName());
         }
 
         return view;

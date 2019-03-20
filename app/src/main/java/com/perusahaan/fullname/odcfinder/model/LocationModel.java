@@ -1,10 +1,14 @@
 package com.perusahaan.fullname.odcfinder.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Full Name on 3/6/2019.
  */
 
-public class LocationModel {
+public class LocationModel implements Parcelable {
+
     private String name;
     private float latitude;
     private float longitude;
@@ -14,6 +18,24 @@ public class LocationModel {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    protected LocationModel(Parcel in) {
+        name = in.readString();
+        latitude = in.readFloat();
+        longitude = in.readFloat();
+    }
+
+    public static final Creator<LocationModel> CREATOR = new Creator<LocationModel>() {
+        @Override
+        public LocationModel createFromParcel(Parcel in) {
+            return new LocationModel(in);
+        }
+
+        @Override
+        public LocationModel[] newArray(int size) {
+            return new LocationModel[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -42,5 +64,17 @@ public class LocationModel {
     @Override
     public String toString() {
         return name;// + ";" + latitude + ";" + longitude + ";";
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeFloat(latitude);
+        parcel.writeFloat(longitude);
     }
 }

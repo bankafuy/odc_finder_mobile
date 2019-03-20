@@ -25,4 +25,6 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
+    <string name="token_fake_json">O96n4fneUTZmwhtKuZUBpQ</string>
+
 </resources>

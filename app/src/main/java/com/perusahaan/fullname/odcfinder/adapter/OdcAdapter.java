@@ -31,8 +31,8 @@ public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
         public ViewHolder(View v) {
             super(v);
             txtName = v.findViewById(R.id.txtOdcName);
-            txtLatitude = v.findViewById(R.id.txtUserId);
-            txtLongitude = v.findViewById(R.id.txtCompleted);
+            txtLatitude = v.findViewById(R.id.txtOdcLatitude);
+            txtLongitude = v.findViewById(R.id.txtOdcLongitude);
         }
 
         public TextView getTxtName() {

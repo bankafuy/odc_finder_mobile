@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.perusahaan.fullname.odcfinder.R;
-import com.perusahaan.fullname.odcfinder.model.SampleObject;
+import com.perusahaan.fullname.odcfinder.model.LocationModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,37 +22,37 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.ViewHolder
 
     private LayoutInflater inflater;
 
-    private List<SampleObject> objectList = new ArrayList<>();
+    private List<LocationModel> objectList = new ArrayList<>();
 
     public interface OnItemClickListener {
-        void onItemClick(SampleObject object);
+        void onItemClick(LocationModel object);
     }
 
     public OnItemClickListener listener;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView txtTitle;
-        private final TextView txtUserId;
-        private final TextView txtCompleted;
+        private final TextView txtLatitude;
+        private final TextView txtLongitude;
 
         public ViewHolder(View v) {
             super(v);
             txtTitle = v.findViewById(R.id.txtOdcName);
-            txtUserId = v.findViewById(R.id.txtUserId);
-            txtCompleted = v.findViewById(R.id.txtCompleted);
+            txtLatitude = v.findViewById(R.id.txtOdcLatitude);
+            txtLongitude = v.findViewById(R.id.txtOdcLongitude);
         }
 
-        public void bind(final SampleObject sampleObject, final OnItemClickListener listener) {
+        public void bind(final LocationModel locationModel, final OnItemClickListener listener) {
 
-            if(sampleObject != null) {
-                txtTitle.setText(String.valueOf(sampleObject.getTitle()));
-                txtUserId.setText(String.valueOf(sampleObject.getUserId()));
-                txtCompleted.setText(String.valueOf(sampleObject.isCompleted()));
+            if(locationModel != null) {
+                txtTitle.setText(String.valueOf(locationModel.getName()));
+                txtLatitude.setText(String.valueOf(locationModel.getLatitude()));
+                txtLongitude.setText(String.valueOf(locationModel.getLongitude()));
 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        listener.onItemClick(sampleObject);
+                        listener.onItemClick(locationModel);
                     }
                 });
             }
@@ -62,16 +62,16 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.ViewHolder
             return txtTitle;
         }
 
-        public TextView getTxtUserId() {
-            return txtUserId;
+        public TextView getTxtLatitude() {
+            return txtLatitude;
         }
 
-        public TextView getTxtCompleted() {
-            return txtCompleted;
+        public TextView getTxtLongitude() {
+            return txtLongitude;
         }
     }
 
-    public SampleAdapter(Context context, List<SampleObject> lists, OnItemClickListener listener) {
+    public SampleAdapter(Context context, List<LocationModel> lists, OnItemClickListener listener) {
         inflater = LayoutInflater.from(context);
         this.objectList = lists;
         this.listener = listener;
@@ -94,9 +94,9 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.ViewHolder
         return objectList.size();
     }
 
-    public void replaceAll(List<SampleObject> models) {
+    public void replaceAll(List<LocationModel> models) {
         for (int i = objectList.size() - 1; i >= 0; i--) {
-            final SampleObject model = objectList.get(i);
+            final LocationModel model = objectList.get(i);
             if (!models.contains(model)) {
                 objectList.remove(model);
             }

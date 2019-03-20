@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +31,7 @@ import com.perusahaan.fullname.odcfinder.ItemFragment;
 import com.perusahaan.fullname.odcfinder.R;
 import com.perusahaan.fullname.odcfinder.Utils.MyUtils;
 import com.perusahaan.fullname.odcfinder.adapter.SampleAdapter;
+import com.perusahaan.fullname.odcfinder.model.LocationModel;
 import com.perusahaan.fullname.odcfinder.model.SampleObject;
 
 import org.json.JSONArray;
@@ -44,9 +46,9 @@ public class SearchFragment extends Fragment {
     private SearchView searchView;
 
     private static ProgressDialog progressDialog;
-    private static final String LOCATION_URL = "https://jsonplaceholder.typicode.com/todos";
+    private static final String LOCATION_URL = "https://app.fakejson.com/q/XTe9P4lk?token=O96n4fneUTZmwhtKuZUBpQ";
 
-    List<SampleObject> objectList;
+    List<LocationModel> objectList;
 
     SampleAdapter sampleAdapter;
     RecyclerView recyclerView;
@@ -136,14 +138,16 @@ public class SearchFragment extends Fragment {
 
                                 JSONObject object = responseJson.getJSONObject(i);
 
-                                SampleObject sampleObject = new SampleObject();
+                                final String name = object.getString("name");
+                                final Double latitude = object.getDouble("latitude");
+                                final Double longitude = object.getDouble("longitude");
 
-                                sampleObject.setId(object.getInt("id"));
-                                sampleObject.setUserId(object.getInt("userId"));
-                                sampleObject.setTitle(object.getString("title"));
-                                sampleObject.setCompleted(object.getBoolean("completed"));
+                                Float fLatitude = Float.valueOf(String.valueOf(latitude));
+                                Float fLongitude = Float.valueOf(String.valueOf(longitude));
 
-                                if (sampleObject.getTitle().contains(query.toLowerCase())) {
+                                LocationModel sampleObject = new LocationModel(name, fLatitude, fLongitude);
+
+                                if (sampleObject.getName().toLowerCase().contains(query.toLowerCase())) {
                                     objectList.add(sampleObject);
                                 }
 
@@ -169,16 +173,16 @@ public class SearchFragment extends Fragment {
     private void setupRecycler() {
         sampleAdapter = new SampleAdapter(getActivity(), objectList, new SampleAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(SampleObject object) {
+            public void onItemClick(LocationModel object) {
                 ItemFragment itemFragment = ItemFragment.newInstance(object);
 
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.searchFragment, itemFragment)
-                        .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
-                        .commit();
-
-                Toast.makeText(getActivity(), String.format("ID: %s", object.getId()), Toast.LENGTH_SHORT).show();
+//                getActivity().getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.searchFragment, itemFragment)
+//                        .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+//                        .commit();
+//
+                Toast.makeText(getActivity(), String.format("ID: %s", object.getName()), Toast.LENGTH_SHORT).show();
             }
         });
         recyclerView.setAdapter(sampleAdapter);

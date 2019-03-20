@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.perusahaan.fullname.odcfinder.adapter.SampleAdapter;
+import com.perusahaan.fullname.odcfinder.model.LocationModel;
 import com.perusahaan.fullname.odcfinder.model.SampleObject;
 
 import org.json.JSONArray;
@@ -47,7 +48,7 @@ public class AboutActivity extends AppCompatActivity {
     private static ProgressDialog progressDialog;
     private static final String LOCATION_URL = "https://jsonplaceholder.typicode.com/todos";
 
-    List<SampleObject> objectList;
+    List<LocationModel> objectList;
 
     SampleAdapter sampleAdapter;
     RecyclerView recyclerView;
@@ -180,16 +181,16 @@ public class AboutActivity extends AppCompatActivity {
 
                                 JSONObject object = responseJson.getJSONObject(i);
 
-                                SampleObject sampleObject = new SampleObject();
-
-                                sampleObject.setId(object.getInt("id"));
-                                sampleObject.setUserId(object.getInt("userId"));
-                                sampleObject.setTitle(object.getString("title"));
-                                sampleObject.setCompleted(object.getBoolean("completed"));
-
-                                if (sampleObject.getTitle().contains(query.toLowerCase())) {
-                                    objectList.add(sampleObject);
-                                }
+//                                LocationModel sampleObject = new LocationModel();
+//
+//                                sampleObject.setId(object.getInt("id"));
+//                                sampleObject.setUserId(object.getInt("userId"));
+//                                sampleObject.setTitle(object.getString("title"));
+//                                sampleObject.setCompleted(object.getBoolean("completed"));
+//
+//                                if (sampleObject.getTitle().contains(query.toLowerCase())) {
+//                                    objectList.add(sampleObject);
+//                                }
 
                             }
 
@@ -213,8 +214,8 @@ public class AboutActivity extends AppCompatActivity {
     private void setupRecycler() {
         sampleAdapter = new SampleAdapter(this, objectList, new SampleAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(SampleObject object) {
-                Toast.makeText(getApplicationContext(), String.format("ID: %s", object.getId()), Toast.LENGTH_SHORT).show();
+            public void onItemClick(LocationModel object) {
+                Toast.makeText(getApplicationContext(), String.format("ID: %s", object.getName()), Toast.LENGTH_SHORT).show();
             }
         });
         recyclerView.setAdapter(sampleAdapter);
