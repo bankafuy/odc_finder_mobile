@@ -9,10 +9,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -22,7 +30,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.perusahaan.fullname.odcfinder.R;
+import com.perusahaan.fullname.odcfinder.Utils.MyUtils;
 import com.perusahaan.fullname.odcfinder.model.LocationModel;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,6 +46,9 @@ import static android.content.Context.LOCATION_SERVICE;
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap googleMap;
     private MapView mapView;
+    private List<LocationModel> lists;
+
+    private static final String LOCATION_URL = "https://app.fakejson.com/q/XTe9P4lk?token=O96n4fneUTZmwhtKuZUBpQ";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,7 +102,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mapView != null) {
+        if (mapView != null) {
             mapView.onDestroy();
         }
     }
@@ -107,46 +123,95 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
 
         this.googleMap.setMyLocationEnabled(true);
+        // this.googleMap.setMaxZoomPreference(15);
 
+        // set default to kota serang
+        LatLng serangLatLng = new LatLng(-6.1149f, 106.1502f);
+        this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(serangLatLng));
+        this.googleMap.animateCamera(CameraUpdateFactory.newLatLng(serangLatLng));
 
         LocationManager service = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
+
         if (service != null) {
             String provider = service.getBestProvider(new Criteria(), false);
             android.location.Location location = service.getLastKnownLocation(provider);
 
-            if(location != null) {
+            if (location != null) {
                 LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                this.googleMap.setMinZoomPreference(15);
                 this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
                 this.googleMap.animateCamera(CameraUpdateFactory.newLatLng(userLocation));
             }
         }
 
-        final List<LocationModel> locationModels = populateData();
+        populateData();
 
-        for (LocationModel loc : locationModels) {
-            Marker marker = this.googleMap.addMarker(new MarkerOptions()
-                    .position(
-                            new LatLng(loc.getLatitude(), loc.getLongitude()))
-                    .title(loc.getName()));
-            marker.showInfoWindow();
+        if(lists != null) {
+
+            for (LocationModel loc : lists) {
+                Marker marker = this.googleMap.addMarker(new MarkerOptions()
+                        .position(
+                                new LatLng(loc.getLatitude(), loc.getLongitude()))
+                        .title(loc.getName()));
+                marker.showInfoWindow();
+            }
         }
-
 
     }
 
-    private List<LocationModel> populateData() {
-        List<LocationModel> list = new LinkedList<>();
+    private void populateData() {
+//
+//        LocationModel loc1 = new LocationModel("jakarta", -6.2293184f, 106.84418f);
+//        LocationModel loc2 = new LocationModel("bandung", -6.2254042f, 106.84774f);
+//        LocationModel loc3 = new LocationModel("merak", -6.2234042f, 106.845274f);
+//        LocationModel loc4 = new LocationModel("pandeglang", -6.2224042f, 106.8465274f);
+//
+//        lists.add(loc1);
+//        lists.add(loc2);
+//        lists.add(loc3);
+//        lists.add(loc4);
+//        return lists;
 
-        LocationModel loc1 = new LocationModel("jakarta", -6.2293184f, 106.84418f);
-        LocationModel loc2 = new LocationModel("bandung", -6.2254042f, 106.84774f);
-        LocationModel loc3 = new LocationModel("merak", -6.2234042f, 106.845274f);
-        LocationModel loc4 = new LocationModel("pandeglang", -6.2224042f, 106.8465274f);
+        MyUtils.showSimpleProgressDialog(getActivity(), "Loading...", "Please wait...", true);
 
-        list.add(loc1);
-        list.add(loc2);
-        list.add(loc3);
-        list.add(loc4);
-        return list;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, LOCATION_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        MyUtils.removeSimpleProgressDialog();
+
+                        try {
+                            lists = new LinkedList<>();
+                            JSONArray responseJson = new JSONArray(response);
+                            for (int i = 0; i < responseJson.length(); i++) {
+
+                                JSONObject object = responseJson.getJSONObject(i);
+
+                                final String name = object.getString("name");
+                                final Double latitude = object.getDouble("latitude");
+                                final Double longitude = object.getDouble("longitude");
+
+                                Float fLatitude = Float.valueOf(String.valueOf(latitude));
+                                Float fLongitude = Float.valueOf(String.valueOf(longitude));
+
+                                LocationModel sampleObject = new LocationModel(name, fLatitude, fLongitude);
+
+                                lists.add(sampleObject);
+                            }
+
+                        } catch (JSONException e) {
+                            Log.d("Response JSON Error", e.getMessage());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.add(stringRequest);
     }
 }
