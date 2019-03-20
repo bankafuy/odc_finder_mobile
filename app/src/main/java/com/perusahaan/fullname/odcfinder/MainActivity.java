@@ -51,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         checkPermissionAndEnableIt();
-
-
     }
 
     private DrawerLayout drawerLayout;
@@ -84,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-        checkPermissionAndEnableIt();
+//        checkPermissionAndEnableIt();
 
         drawerLayout = findViewById(R.id.drawer_layout);
         drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
