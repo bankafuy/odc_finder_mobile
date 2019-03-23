@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
         final SearchFragment searchFragment = new SearchFragment();
         final HomeFragment homeFragment = new HomeFragment();
         final AboutFragment aboutFragment = new AboutFragment();
-        final ProfileFragment profileFragment = new ProfileFragment();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
 
@@ -127,9 +126,9 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                item.setChecked(true);
                 switch (item.getItemId()) {
                     case R.id.menu_home:
+                        item.setChecked(true);
                         actionBar.setTitle("Home");
                         showSearch = false;
                         invalidateOptionsMenu();
@@ -140,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                                 .commit();
                         break;
                     case R.id.menu_about:
+                        item.setChecked(true);
                         actionBar.setTitle("Tentang");
                         showSearch = false;
                         invalidateOptionsMenu();
@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
                                 .commit();
                         break;
                     case R.id.menu_list:
+                        item.setChecked(true);
                         actionBar.setTitle("Daftar ODC");
                         showSearch = false;
                         invalidateOptionsMenu();
@@ -160,14 +161,21 @@ public class MainActivity extends AppCompatActivity {
                                 .commit();
                         break;
                     case R.id.menu_logout:
+                        item.setChecked(false);
+                        invalidateOptionsMenu();
                         Toast.makeText(getApplicationContext(), "Menu Logout", Toast.LENGTH_SHORT).show();
                         msgYesNo(MainActivity.this, "Yakin?");
-                        break;
+                        drawerLayout.closeDrawers();
+                        return false;
                     case R.id.menu_profile:
+                        item.setChecked(false);
+                        invalidateOptionsMenu();
                         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                         startActivity(intent, ActivityOptions
                                 .makeCustomAnimation(MainActivity.this, R.anim.swipe_left, R.anim.swipe_left_back)
                                 .toBundle());
+                        drawerLayout.closeDrawers();
+                        return false;
 //                        actionBar.setTitle("Profile");
 //                        showSearch = false;
 //                        invalidateOptionsMenu();
@@ -176,8 +184,8 @@ public class MainActivity extends AppCompatActivity {
 //                                .replace(R.id.frameContent, profileFragment)
 //                                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
 //                                .commit();
-                        break;
                     case R.id.menu_search:
+                        item.setChecked(true);
                         actionBar.setTitle("Pencarian...");
                         showSearch = false;
                         invalidateOptionsMenu();
