@@ -10,15 +10,13 @@ import android.os.Parcelable;
 public class UserModel implements Parcelable {
     private Integer id;
     private String username;
-    private String password;
     private String nama;
     private String level;
     private String photo;
 
-    public UserModel(Integer id, String username, String password, String nama, String level, String photo) {
+    public UserModel(Integer id, String username, String nama, String level, String photo) {
         this.id = id;
         this.username = username;
-        this.password = password;
         this.nama = nama;
         this.level = level;
         this.photo = photo;
@@ -31,7 +29,6 @@ public class UserModel implements Parcelable {
             id = in.readInt();
         }
         username = in.readString();
-        password = in.readString();
         nama = in.readString();
         level = in.readString();
         photo = in.readString();
@@ -55,9 +52,6 @@ public class UserModel implements Parcelable {
     public String getUsername() {
         return username;
     }
-    public String getPassword() {
-        return password;
-    }
     public String getNama() {
         return nama;
     }
@@ -73,9 +67,6 @@ public class UserModel implements Parcelable {
     }
     public void setUsername(String username) {
         this.username = username;
-    }
-    public void setPassword(String password) {
-        this.password = password;
     }
     public void setNama(String nama) {
         this.nama = nama;
@@ -96,7 +87,6 @@ public class UserModel implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);
         parcel.writeString(username);
-        parcel.writeString(password);
         parcel.writeString(nama);
         parcel.writeString(level);
         parcel.writeString(photo);

@@ -31,6 +31,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.perusahaan.fullname.odcfinder.Utils.Constant;
 import com.perusahaan.fullname.odcfinder.Utils.MyUtils;
+import com.perusahaan.fullname.odcfinder.model.UserModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -119,21 +120,6 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             MyUtils.showSimpleProgressDialog(this, "Mencoba login...", "Harap bersabar...");
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    MyUtils.removeSimpleProgressDialog();
-//                    Random random = new Random();
-//                    int i = random.nextInt();
-//
-//                    if(i % 2 == 0) {
-//                        onSuccess();
-//                    } else {
-//                        onFailed();
-//                    }
-//
-//                }
-//            }, 3000);
 
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("username", txtUsername.getText().toString());
@@ -145,10 +131,24 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             MyUtils.removeSimpleProgressDialog();
-                            if(response != null && response.contains("invalid credential")) {
+                            if(response == null || response.contains("invalid credential")) {
                                 onFailed();
                             } else {
-                                onSuccess();
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    String username = jsonObject.getString("username");
+                                    String nama = jsonObject.getString("nama");
+                                    String level = jsonObject.getString("level");
+                                    String photo = jsonObject.getString("photo");
+
+
+                                    UserModel userModel = new UserModel(null, username, nama, level, photo);
+
+                                    onSuccess(userModel);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }, new Response.ErrorListener() {
@@ -180,11 +180,18 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void onSuccess() {
+    private void onSuccess(UserModel userModel) {
         Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
         prefs.edit().putBoolean(Constant.PREF_LOGIN, true).apply();
+
+        if(userModel != null) {
+            prefs.edit().putString(Constant.PREF_USERNAME, userModel.getUsername()).apply();
+            prefs.edit().putString(Constant.PREF_NAMA, userModel.getNama()).apply();
+            prefs.edit().putString(Constant.PREF_PROFILE, userModel.getPhoto()).apply();
+        }
+
         startActivity(new Intent(this, MainActivity.class));
-        finish();
+//        finish();
     }
 
     private void onFailed() {

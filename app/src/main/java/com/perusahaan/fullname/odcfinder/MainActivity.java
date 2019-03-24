@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.menu_profile:
                         item.setChecked(false);
                         invalidateOptionsMenu();
+
                         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                         startActivity(intent, ActivityOptions
                                 .makeCustomAnimation(MainActivity.this, R.anim.swipe_left, R.anim.swipe_left_back)
@@ -235,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         prefs.edit().putBoolean(Constant.PREF_LOGIN, false).apply();
                         finish();
-                        System.exit(0);
+//                        System.exit(0);
                     }
                 })
                 .setNegativeButton("Tidak", null)

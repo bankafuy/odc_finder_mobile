@@ -30,6 +30,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.perusahaan.fullname.odcfinder.Utils.Constant;
 import com.perusahaan.fullname.odcfinder.databinding.ActivityProfileBinding;
 import com.perusahaan.fullname.odcfinder.model.UserModel;
 import com.squareup.picasso.Picasso;
@@ -42,6 +43,7 @@ import java.io.InputStream;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private UserModel user;
     private EditText txtName;
     private FloatingActionButton floatingActionButton;
     private ImageView imgProfile;
@@ -51,6 +53,8 @@ public class ProfileActivity extends AppCompatActivity {
     private final int CHOOSE_IMAGE = 666;
 
     private final String KEYWORD_IMAGE_PROFILE = "imgProfile";
+
+    private SharedPreferences prefs;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -129,9 +133,16 @@ public class ProfileActivity extends AppCompatActivity {
 
         ActivityProfileBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_profile);
 
-        UserModel user = new UserModel(1, "admin", "admin", "khotibul", "ADMIN", "");
+        prefs = this.getSharedPreferences("com.perusahaan.fullname.odcfinder", Context.MODE_PRIVATE);
 
-        binding.setUserModel(user);
+        if(user != null) {
+            final String username = prefs.getString(Constant.PREF_USERNAME, "-");
+            final String nama = prefs.getString(Constant.PREF_NAMA, "-");
+            final String profile = prefs.getString(Constant.PREF_PROFILE, "-");
+
+            user = new UserModel(null, username, nama, null, profile);
+            binding.setUserModel(user);
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbarProfile);
         setSupportActionBar(toolbar);
