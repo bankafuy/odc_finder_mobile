@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent, ActivityOptions
-                                .makeCustomAnimation(MainActivity.this, R.anim.swipe_left_back, R.anim.swipe_left)
+                                .makeCustomAnimation(MainActivity.this, R.anim.swipe_right, R.anim.swipe_right_back)
                                 .toBundle());
 
 //                        System.exit(0);
