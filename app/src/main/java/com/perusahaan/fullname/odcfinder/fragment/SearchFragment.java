@@ -47,7 +47,6 @@ public class SearchFragment extends Fragment {
 
     OdcAdapter odcAdapter;
     RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
 
     private Handler handler = new Handler();
     private String queryText = "";

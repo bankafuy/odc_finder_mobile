@@ -1,13 +1,18 @@
 package com.perusahaan.fullname.odcfinder.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.perusahaan.fullname.odcfinder.R;
+import com.perusahaan.fullname.odcfinder.Utils.CustomAdapterListener;
+import com.perusahaan.fullname.odcfinder.fragment.OdcViewFragment;
 import com.perusahaan.fullname.odcfinder.model.OdcModel;
 
 import java.util.ArrayList;
@@ -20,16 +25,16 @@ import java.util.List;
 public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
-
     private List<OdcModel> OdcModelList = new ArrayList<>();
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView txtName;
         private final TextView txtKapasitas;
         private final TextView txtDatel;
         private final TextView txtWitel;
         private final TextView txtLatitude;
         private final TextView txtLongitude;
+        private OdcModel odcModel;
 
         public ViewHolder(View v) {
             super(v);
@@ -39,6 +44,7 @@ public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
             txtWitel = v.findViewById(R.id.txtOdcWitel);
             txtLatitude = v.findViewById(R.id.txtOdcLatitude);
             txtLongitude = v.findViewById(R.id.txtOdcLongitude);
+            v.setOnClickListener(this);
         }
 
         public TextView getTxtName() {
@@ -59,10 +65,36 @@ public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
         public TextView getTxtLongitude() {
             return txtLongitude;
         }
+
+        @Override
+        public void onClick(View view) {
+            OdcViewFragment odcViewFragment = new OdcViewFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("odc_item", odcModel);
+
+            odcViewFragment.setArguments(bundle);
+
+            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+
+            activity.getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frameContent, odcViewFragment)
+                    .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+                    .commit();
+        }
+
+        public OdcModel getOdcModel() {
+            return odcModel;
+        }
+
+        public void setOdcModel(OdcModel odcModel) {
+            this.odcModel = odcModel;
+        }
     }
 
     public OdcAdapter(Context context, List<OdcModel> lists) {
-        inflater = LayoutInflater.from(context);
+        this.inflater = LayoutInflater.from(context);
         this.OdcModelList = lists;
     }
 
@@ -70,6 +102,7 @@ public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
     public OdcAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.odc_list_row, parent, false);
+
         return new ViewHolder(v);
     }
 
@@ -88,6 +121,7 @@ public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
         holder.getTxtLongitude().setText(
                 String.valueOf(OdcModelList.get(position).getLongitude()));
 
+        holder.setOdcModel(OdcModelList.get(position));
     }
 
     @Override

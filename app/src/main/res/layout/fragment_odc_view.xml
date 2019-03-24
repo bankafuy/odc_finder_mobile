@@ -4,9 +4,9 @@
     android:layout_height="match_parent"
     tools:context="com.perusahaan.fullname.odcfinder.fragment.OdcViewFragment">
 
-    <TextView
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapViewOdc"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
+        />
 </FrameLayout>
