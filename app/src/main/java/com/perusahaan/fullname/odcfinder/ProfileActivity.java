@@ -173,26 +173,27 @@ public class ProfileActivity extends AppCompatActivity {
             if(requestCode == CHOOSE_IMAGE) {
 
                 final Uri uri = data.getData();
+                Picasso.get()
+                        .load(uri)
+                        .resize(1366, 768)
+                        .into(imgProfile);
 
-                try {
-                    final Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                    final Bitmap resizedBitmap = getResizedBitmap(bitmap, 400, 800);
-                    imgProfile.setImageBitmap(resizedBitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//
+//                    final Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+//                    final Bitmap resizedBitmap = getResizedBitmap(bitmap, 200, 400);
+//                    imgProfile.setImageBitmap(resizedBitmap);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
 
-//                Picasso.get()
-//                        .load(uri)
-//                        .resize(1366, 768)
-//                        .into(imgProfile);
             }
         }
     }
 
     public static String encodeToBase64(Bitmap image) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] b = byteArrayOutputStream.toByteArray();
         String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
 
