@@ -2,6 +2,7 @@ package com.perusahaan.fullname.odcfinder.fragment;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.LocationManager;
@@ -9,6 +10,9 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +54,16 @@ public class OdcViewFragment extends Fragment implements OnMapReadyCallback {
 
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
+
+        Toolbar toolbar = activity.findViewById(R.id.toolbar);
+        activity.setSupportActionBar(toolbar);
+
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setTitle(odcModel.getNamaOdc());
+        }
 
         return view;
 

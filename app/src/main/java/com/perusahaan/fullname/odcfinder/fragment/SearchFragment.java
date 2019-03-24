@@ -7,9 +7,11 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -104,11 +106,17 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        FragmentActivity activity = getActivity();
-
         recyclerView = view.findViewById(R.id.odcRecyclerView);
 
-        searchView = activity.findViewById(R.id.menu_search);
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
+        Toolbar toolbar = activity.findViewById(R.id.toolbar);
+        activity.setSupportActionBar(toolbar);
+
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setTitle("Search");
+        }
+
+//        searchView = activity.findViewById(R.id.menu_search);
 
         fetchingJson("");
 

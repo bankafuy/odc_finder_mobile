@@ -164,15 +164,21 @@ public class MainActivity extends AppCompatActivity {
                                 .beginTransaction()
                                 .replace(R.id.frameContent, searchFragment)
                                 .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+                                .addToBackStack(null)
                                 .commit();
                         break;
-                    case R.id.menu_logout:
-                        item.setChecked(false);
-                        invalidateOptionsMenu();
-                        Toast.makeText(getApplicationContext(), "Menu Logout", Toast.LENGTH_SHORT).show();
-                        msgYesNo(MainActivity.this, "Yakin?");
-                        drawerLayout.closeDrawers();
-                        return false;
+//                    case R.id.menu_search:
+//                        item.setChecked(true);
+//                        actionBar.setTitle("Pencarian...");
+//                        showSearch = false;
+//                        invalidateOptionsMenu();
+//                        getSupportFragmentManager()
+//                                .beginTransaction()
+//                                .replace(R.id.frameContent, searchFragment)
+//                                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+//                                .addToBackStack(null)
+//                                .commit();
+//                        break;
                     case R.id.menu_profile:
                         item.setChecked(false);
                         invalidateOptionsMenu();
@@ -182,25 +188,13 @@ public class MainActivity extends AppCompatActivity {
                                 .toBundle());
                         drawerLayout.closeDrawers();
                         return false;
-//                        actionBar.setTitle("Profile");
-//                        showSearch = false;
-//                        invalidateOptionsMenu();
-//                        getSupportFragmentManager()
-//                                .beginTransaction()
-//                                .replace(R.id.frameContent, profileFragment)
-//                                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
-//                                .commit();
-                    case R.id.menu_search:
-                        item.setChecked(true);
-                        actionBar.setTitle("Pencarian...");
-                        showSearch = false;
+                    case R.id.menu_logout:
+                        item.setChecked(false);
                         invalidateOptionsMenu();
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.frameContent, searchFragment)
-                                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
-                                .commit();
-                        break;
+                        Toast.makeText(getApplicationContext(), "Menu Logout", Toast.LENGTH_SHORT).show();
+                        msgYesNo(MainActivity.this, "Yakin?");
+                        drawerLayout.closeDrawers();
+                        return false;
                 }
 
                 drawerLayout.closeDrawers();
@@ -260,7 +254,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        msgYesNo(MainActivity.this, "Yakin?");
+
+        if(getSupportFragmentManager().getBackStackEntryCount() >= 1) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            msgYesNo(MainActivity.this, "Yakin?");
+        }
     }
 
     public void setTitleBar(String title) {

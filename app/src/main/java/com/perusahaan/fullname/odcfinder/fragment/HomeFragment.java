@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +70,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
+
+        Toolbar toolbar = activity.findViewById(R.id.toolbar);
+        activity.setSupportActionBar(toolbar);
+
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setTitle("Home");
+        }
 
         return view;
     }

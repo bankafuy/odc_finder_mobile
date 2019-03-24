@@ -2,6 +2,7 @@ package com.perusahaan.fullname.odcfinder.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -80,7 +81,12 @@ public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
             activity.getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.frameContent, odcViewFragment)
-                    .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+                    .setCustomAnimations(
+                            R.anim.swipe_left,
+                            R.anim.swipe_left_back,
+                            R.anim.swipe_right,
+                            R.anim.swipe_right_back)
+                    .addToBackStack("odc_list")
                     .commit();
         }
 
