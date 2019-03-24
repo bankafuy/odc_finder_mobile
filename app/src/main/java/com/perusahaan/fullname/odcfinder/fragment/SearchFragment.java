@@ -1,12 +1,10 @@
 package com.perusahaan.fullname.odcfinder.fragment;
 
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,12 +25,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.perusahaan.fullname.odcfinder.ItemFragment;
 import com.perusahaan.fullname.odcfinder.R;
 import com.perusahaan.fullname.odcfinder.Utils.MyUtils;
-import com.perusahaan.fullname.odcfinder.adapter.SampleAdapter;
-import com.perusahaan.fullname.odcfinder.model.LocationModel;
-import com.perusahaan.fullname.odcfinder.model.SampleObject;
+import com.perusahaan.fullname.odcfinder.adapter.OdcAdapter;
+import com.perusahaan.fullname.odcfinder.model.OdcModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,12 +41,11 @@ public class SearchFragment extends Fragment {
 
     private SearchView searchView;
 
-    private static ProgressDialog progressDialog;
-    private static final String LOCATION_URL = "https://app.fakejson.com/q/XTe9P4lk?token=O96n4fneUTZmwhtKuZUBpQ";
+    private static final String LOCATION_URL = "http://khotibul.herokuapp.com/odc";
 
-    List<LocationModel> objectList;
+    List<OdcModel> odcLists;
 
-    SampleAdapter sampleAdapter;
+    OdcAdapter odcAdapter;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
@@ -133,22 +128,26 @@ public class SearchFragment extends Fragment {
 
                         try {
                             JSONArray responseJson = new JSONArray(response);
-                            objectList = new LinkedList<>();
+                            odcLists = new LinkedList<>();
                             for (int i = 0; i < responseJson.length(); i++) {
 
                                 JSONObject object = responseJson.getJSONObject(i);
 
-                                final String name = object.getString("name");
+                                final String name = object.getString("nama_odc");
+                                final String kapasitas = object.getString("kapasitas");
+                                final String datel = object.getString("datel");
+                                final String witel = object.getString("witel");
                                 final Double latitude = object.getDouble("latitude");
                                 final Double longitude = object.getDouble("longitude");
 
                                 Float fLatitude = Float.valueOf(String.valueOf(latitude));
                                 Float fLongitude = Float.valueOf(String.valueOf(longitude));
 
-                                LocationModel sampleObject = new LocationModel(name, fLatitude, fLongitude);
+                                OdcModel sampleObject = new OdcModel(name, kapasitas, datel, witel
+                                        , fLatitude, fLongitude);
 
-                                if (sampleObject.getName().toLowerCase().contains(query.toLowerCase())) {
-                                    objectList.add(sampleObject);
+                                if (sampleObject.getNamaOdc().toLowerCase().contains(query.toLowerCase())) {
+                                    odcLists.add(sampleObject);
                                 }
 
                             }
@@ -171,21 +170,8 @@ public class SearchFragment extends Fragment {
     }
 
     private void setupRecycler() {
-        sampleAdapter = new SampleAdapter(getActivity(), objectList, new SampleAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(LocationModel object) {
-                ItemFragment itemFragment = ItemFragment.newInstance(object);
-
-//                getActivity().getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.searchFragment, itemFragment)
-//                        .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
-//                        .commit();
-//
-                Toast.makeText(getActivity(), String.format("ID: %s", object.getName()), Toast.LENGTH_SHORT).show();
-            }
-        });
-        recyclerView.setAdapter(sampleAdapter);
+        odcAdapter = new OdcAdapter(getActivity(), odcLists);
+        recyclerView.setAdapter(odcAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
     }
 

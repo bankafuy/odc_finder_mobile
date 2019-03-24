@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.perusahaan.fullname.odcfinder.R;
-import com.perusahaan.fullname.odcfinder.model.LocationModel;
+import com.perusahaan.fullname.odcfinder.model.OdcModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +21,22 @@ public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
 
-    private List<LocationModel> locationModelList = new ArrayList<>();
+    private List<OdcModel> OdcModelList = new ArrayList<>();
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView txtName;
+        private final TextView txtKapasitas;
+        private final TextView txtDatel;
+        private final TextView txtWitel;
         private final TextView txtLatitude;
         private final TextView txtLongitude;
 
         public ViewHolder(View v) {
             super(v);
             txtName = v.findViewById(R.id.txtOdcName);
+            txtKapasitas = v.findViewById(R.id.txtOdcKapasitas);
+            txtDatel = v.findViewById(R.id.txtOdcDatel);
+            txtWitel = v.findViewById(R.id.txtOdcWitel);
             txtLatitude = v.findViewById(R.id.txtOdcLatitude);
             txtLongitude = v.findViewById(R.id.txtOdcLongitude);
         }
@@ -38,19 +44,26 @@ public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
         public TextView getTxtName() {
             return txtName;
         }
-
+        public TextView getTxtKapasitas() {
+            return txtKapasitas;
+        }
+        public TextView getTxtDatel() {
+            return txtDatel;
+        }
+        public TextView getTxtWitel() {
+            return txtWitel;
+        }
         public TextView getTxtLatitude() {
             return txtLatitude;
         }
-
         public TextView getTxtLongitude() {
             return txtLongitude;
         }
     }
 
-    public OdcAdapter(Context context, List<LocationModel> lists) {
+    public OdcAdapter(Context context, List<OdcModel> lists) {
         inflater = LayoutInflater.from(context);
-        this.locationModelList = lists;
+        this.OdcModelList = lists;
     }
 
     @Override
@@ -63,25 +76,23 @@ public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(OdcAdapter.ViewHolder holder, int position) {
         holder.getTxtName().setText(
-                locationModelList.get(position).getName());
+                OdcModelList.get(position).getNamaOdc());
+        holder.getTxtKapasitas().setText(
+                OdcModelList.get(position).getKapasitas());
+        holder.getTxtDatel().setText(
+                OdcModelList.get(position).getDatel());
+        holder.getTxtWitel().setText(
+                OdcModelList.get(position).getWitel());
         holder.getTxtLatitude().setText(
-                String.valueOf(locationModelList.get(position).getLatitude()));
+                String.valueOf(OdcModelList.get(position).getLatitude()));
         holder.getTxtLongitude().setText(
-                String.valueOf(locationModelList.get(position).getLongitude()));
+                String.valueOf(OdcModelList.get(position).getLongitude()));
 
     }
 
     @Override
     public int getItemCount() {
-        return locationModelList.size();
+        return OdcModelList.size();
     }
 
-    public void setLocationModelList(List<LocationModel> locationModelList) {
-        this.locationModelList = null;
-        this.locationModelList = locationModelList;
-    }
-
-    public List<LocationModel> getLocationModelList() {
-        return this.locationModelList;
-    }
 }

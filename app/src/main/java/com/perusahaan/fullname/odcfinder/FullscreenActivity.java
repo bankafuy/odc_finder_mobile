@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.google.android.gms.maps.MapsInitializer;
+
 public class FullscreenActivity extends AppCompatActivity {
 
     @Override

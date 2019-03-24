@@ -29,6 +29,27 @@
                 />
 
             <TextView
+                android:id="@+id/txtOdcKapasitas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="kapasitas"
+                />
+
+            <TextView
+                android:id="@+id/txtOdcDatel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="datel"
+                />
+
+            <TextView
+                android:id="@+id/txtOdcWitel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="witel"
+                />
+
+            <TextView
                 android:id="@+id/txtOdcLatitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

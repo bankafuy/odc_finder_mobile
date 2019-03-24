@@ -15,6 +15,15 @@ public class OdcModel implements Parcelable {
     private Float latitude;
     private Float longitude;
 
+    public OdcModel(String namaOdc, String kapasitas, String datel, String witel, Float latitude, Float longitude) {
+        this.namaOdc = namaOdc;
+        this.kapasitas = kapasitas;
+        this.datel = datel;
+        this.witel = witel;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     protected OdcModel(Parcel in) {
         namaOdc = in.readString();
         kapasitas = in.readString();

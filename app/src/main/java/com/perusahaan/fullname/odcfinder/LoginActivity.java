@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,9 +21,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.perusahaan.fullname.odcfinder.Utils.Constant;
 import com.perusahaan.fullname.odcfinder.Utils.MyUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class LoginActivity extends AppCompatActivity {
@@ -31,8 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         msgYesNo(this);
     }
 
-    private static final String LOCATION_URL = "https://jsonplaceholder.typicode.com/todos";
-
+    private static final String LOGIN_URL = "http://khotibul.herokuapp.com/login";
     private AutoCompleteTextView txtUsername;
     private EditText txtPassword;
     private SharedPreferences prefs;
@@ -51,7 +65,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    try {
+                        attemptLogin();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     return true;
                 }
                 return false;
@@ -62,13 +80,17 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                try {
+                    attemptLogin();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
     }
 
-    private void attemptLogin()  {
+    private void attemptLogin() throws JSONException {
         txtUsername.setError(null);
         txtPassword.setError(null);
 
@@ -96,50 +118,65 @@ public class LoginActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            MyUtils.showSimpleProgressDialog(this, "Judul Login", "Sabar 3 detik.", false);
-            new Handler().postDelayed(new Runnable() {
+            MyUtils.showSimpleProgressDialog(this, "Mencoba login...", "Harap bersabar...", false);
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    MyUtils.removeSimpleProgressDialog();
+//                    Random random = new Random();
+//                    int i = random.nextInt();
+//
+//                    if(i % 2 == 0) {
+//                        onSuccess();
+//                    } else {
+//                        onFailed();
+//                    }
+//
+//                }
+//            }, 3000);
+
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("username", txtUsername.getText().toString());
+            jsonBody.put("password", txtPassword.getText().toString());
+            final String requestBody = jsonBody.toString();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, LOGIN_URL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            MyUtils.removeSimpleProgressDialog();
+                            if(response != null && response.contains("invalid credential")) {
+                                onFailed();
+                            } else {
+                                onSuccess();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
                 @Override
-                public void run() {
+                public void onErrorResponse(VolleyError error) {
                     MyUtils.removeSimpleProgressDialog();
-                    Random random = new Random();
-                    int i = random.nextInt();
-
-                    if(i % 2 == 0) {
-                        onSuccess();
-                    } else {
-                        onFailed();
-                    }
-
+                    Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-            }, 3000);
+            }) {
 
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
 
-//            prefs.edit().putBoolean(Constant.PREF_LOGIN, true).apply();
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+            };
 
-//            Intent intent = getIntent();
-
-//            StringRequest stringRequest = new StringRequest(Request.Method.GET, LOCATION_URL,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//
-//                        Log.d("L", response.toString());
-//                        for(int i = 0 ; i<10000; i++) {
-//                            Log.d("", String.valueOf(i));
-//                        }
-//
-//                        MyUtils.removeSimpleProgressDialog();
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//
-//            RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
-//            requestQueue.add(stringRequest);
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
         }
     }
 

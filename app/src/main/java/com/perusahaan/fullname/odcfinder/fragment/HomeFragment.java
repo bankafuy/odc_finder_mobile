@@ -31,7 +31,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.perusahaan.fullname.odcfinder.R;
 import com.perusahaan.fullname.odcfinder.Utils.MyUtils;
-import com.perusahaan.fullname.odcfinder.model.LocationModel;
+import com.perusahaan.fullname.odcfinder.model.OdcModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,9 +46,15 @@ import static android.content.Context.LOCATION_SERVICE;
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap googleMap;
     private MapView mapView;
-    private List<LocationModel> lists;
+    private List<OdcModel> lists;
+    private RequestQueue requestQueue;
 
-    private static final String LOCATION_URL = "https://app.fakejson.com/q/XTe9P4lk?token=O96n4fneUTZmwhtKuZUBpQ";
+    private static final String LOCATION_URL = "http://khotibul.herokuapp.com/odc";
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +62,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         MapsInitializer.initialize(getContext());
+        requestQueue = Volley.newRequestQueue(getActivity());
 
         mapView = view.findViewById(R.id.mapView);
 
@@ -78,19 +85,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         mapView.onPause();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     @Override
@@ -102,15 +99,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mapView != null) {
+        if(mapView != null)
             mapView.onDestroy();
-        }
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -127,8 +117,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         // set default to kota serang
         LatLng serangLatLng = new LatLng(-6.1149f, 106.1502f);
-        this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(serangLatLng));
-        this.googleMap.animateCamera(CameraUpdateFactory.newLatLng(serangLatLng));
+        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(serangLatLng, 15f));
+//        this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(serangLatLng));
 
         LocationManager service = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
 
@@ -138,39 +128,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
             if (location != null) {
                 LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
-                this.googleMap.animateCamera(CameraUpdateFactory.newLatLng(userLocation));
+                this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f));
+                this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f));
             }
         }
 
         populateData();
 
-        if(lists != null) {
-
-            for (LocationModel loc : lists) {
-                Marker marker = this.googleMap.addMarker(new MarkerOptions()
-                        .position(
-                                new LatLng(loc.getLatitude(), loc.getLongitude()))
-                        .title(loc.getName()));
-                marker.showInfoWindow();
-            }
-        }
-
     }
 
     private void populateData() {
-//
-//        LocationModel loc1 = new LocationModel("jakarta", -6.2293184f, 106.84418f);
-//        LocationModel loc2 = new LocationModel("bandung", -6.2254042f, 106.84774f);
-//        LocationModel loc3 = new LocationModel("merak", -6.2234042f, 106.845274f);
-//        LocationModel loc4 = new LocationModel("pandeglang", -6.2224042f, 106.8465274f);
-//
-//        lists.add(loc1);
-//        lists.add(loc2);
-//        lists.add(loc3);
-//        lists.add(loc4);
-//        return lists;
-
         MyUtils.showSimpleProgressDialog(getActivity(), "Loading...", "Please wait...", true);
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, LOCATION_URL,
@@ -187,17 +154,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
                                 JSONObject object = responseJson.getJSONObject(i);
 
-                                final String name = object.getString("name");
+                                final String name = object.getString("nama_odc");
+                                final String kapasitas = object.getString("kapasitas");
+                                final String datel = object.getString("datel");
+                                final String witel = object.getString("witel");
                                 final Double latitude = object.getDouble("latitude");
                                 final Double longitude = object.getDouble("longitude");
 
                                 Float fLatitude = Float.valueOf(String.valueOf(latitude));
                                 Float fLongitude = Float.valueOf(String.valueOf(longitude));
 
-                                LocationModel sampleObject = new LocationModel(name, fLatitude, fLongitude);
+                                OdcModel sampleObject = new OdcModel(name, kapasitas, datel, witel
+                                        , fLatitude, fLongitude);
 
                                 lists.add(sampleObject);
                             }
+
+                            addMarkerToMap(lists);
 
                         } catch (JSONException e) {
                             Log.d("Response JSON Error", e.getMessage());
@@ -211,7 +184,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                     }
                 });
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         requestQueue.add(stringRequest);
+    }
+
+    private void addMarkerToMap(List<OdcModel> lists) {
+        for (OdcModel odc : lists) {
+            Marker marker = this.googleMap.addMarker(new MarkerOptions()
+                    .position(
+                            new LatLng(odc.getLatitude(), odc.getLongitude()))
+                    .title(odc.getNamaOdc() + " - " + odc.getKapasitas()));
+            marker.showInfoWindow();
+        }
     }
 }
