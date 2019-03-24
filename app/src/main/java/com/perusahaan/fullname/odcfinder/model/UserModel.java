@@ -23,11 +23,7 @@ public class UserModel implements Parcelable {
     }
 
     protected UserModel(Parcel in) {
-        if (in.readByte() == 0) {
-            id = null;
-        } else {
-            id = in.readInt();
-        }
+        id = in.readInt();
         username = in.readString();
         nama = in.readString();
         level = in.readString();

@@ -236,6 +236,12 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         prefs.edit().putBoolean(Constant.PREF_LOGIN, false).apply();
                         finish();
+
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent, ActivityOptions
+                                .makeCustomAnimation(MainActivity.this, R.anim.swipe_left_back, R.anim.swipe_left)
+                                .toBundle());
+
 //                        System.exit(0);
                     }
                 })

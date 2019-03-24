@@ -187,11 +187,12 @@ public class LoginActivity extends AppCompatActivity {
         if(userModel != null) {
             prefs.edit().putString(Constant.PREF_USERNAME, userModel.getUsername()).apply();
             prefs.edit().putString(Constant.PREF_NAMA, userModel.getNama()).apply();
+            prefs.edit().putString(Constant.PREF_LEVEL, userModel.getLevel()).apply();
             prefs.edit().putString(Constant.PREF_PROFILE, userModel.getPhoto()).apply();
         }
 
         startActivity(new Intent(this, MainActivity.class));
-//        finish();
+        finish();
     }
 
     private void onFailed() {
