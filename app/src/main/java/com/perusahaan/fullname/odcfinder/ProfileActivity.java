@@ -169,10 +169,15 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK) {
             if(requestCode == CHOOSE_IMAGE) {
-                Picasso.get()
-                        .load(data.getData())
-                        .resize(1366, 768)
-                        .into(imgProfile);
+
+                final Uri uri = data.getData();
+
+                imgProfile.setImageURI(uri);
+
+//                Picasso.get()
+//                        .load(uri)
+//                        .resize(1366, 768)
+//                        .into(imgProfile);
             }
         }
 

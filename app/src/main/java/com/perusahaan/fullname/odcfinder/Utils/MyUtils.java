@@ -26,11 +26,11 @@ public class MyUtils {
     }
 
     public static void showSimpleProgressDialog(Context context, String title,
-                                                String msg, boolean isCancelable) {
+                                                String msg) {
         try {
             if (progressDialog == null) {
                 progressDialog = ProgressDialog.show(context, title, msg);
-                progressDialog.setCancelable(isCancelable);
+                progressDialog.setCancelable(false);
             }
 
             if (!progressDialog.isShowing()) {

@@ -124,7 +124,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void fetchingJson(final String query) {
-        MyUtils.showSimpleProgressDialog(getActivity(), "Loading...","Please wait...",true);
+        MyUtils.showSimpleProgressDialog(getActivity(), "Loading...","Please wait...");
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, LOCATION_URL,
                 new Response.Listener<String>() {

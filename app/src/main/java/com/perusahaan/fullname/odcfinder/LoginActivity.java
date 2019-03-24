@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            MyUtils.showSimpleProgressDialog(this, "Mencoba login...", "Harap bersabar...", false);
+            MyUtils.showSimpleProgressDialog(this, "Mencoba login...", "Harap bersabar...");
 //            new Handler().postDelayed(new Runnable() {
 //                @Override
 //                public void run() {

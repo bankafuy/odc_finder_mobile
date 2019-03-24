@@ -23,12 +23,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.perusahaan.fullname.odcfinder.R;
@@ -149,7 +151,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void populateData() {
-        MyUtils.showSimpleProgressDialog(getActivity(), "Loading...", "Please wait...", true);
+        MyUtils.showSimpleProgressDialog(getActivity(), "Loading...", "Please wait...");
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, LOCATION_URL,
                 new Response.Listener<String>() {
@@ -199,12 +201,25 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void addMarkerToMap(List<OdcModel> lists) {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
         for (OdcModel odc : lists) {
             Marker marker = this.googleMap.addMarker(new MarkerOptions()
                     .position(
                             new LatLng(odc.getLatitude(), odc.getLongitude()))
                     .title(odc.getNamaOdc() + " - " + odc.getKapasitas()));
             marker.showInfoWindow();
+
+            builder.include(marker.getPosition());
         }
+
+        final LatLngBounds latLngBounds = builder.build();
+
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        int padding = (int) (width * 0.10);
+
+        this.googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, width, height, padding));
+
     }
 }
