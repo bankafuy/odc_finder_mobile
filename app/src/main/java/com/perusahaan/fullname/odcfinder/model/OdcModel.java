@@ -29,16 +29,19 @@ public class OdcModel implements Parcelable {
         kapasitas = in.readString();
         datel = in.readString();
         witel = in.readString();
-        if (in.readByte() == 0) {
-            latitude = null;
-        } else {
-            latitude = in.readFloat();
-        }
-        if (in.readByte() == 0) {
-            longitude = null;
-        } else {
-            longitude = in.readFloat();
-        }
+
+        latitude = in.readFloat();
+        longitude = in.readFloat();
+//        if (in.readByte() == 0) {
+//            latitude = null;
+//        } else {
+//            latitude = in.readFloat();
+//        }
+//        if (in.readByte() == 0) {
+//            longitude = null;
+//        } else {
+//            longitude = in.readFloat();
+//        }
     }
 
     public static final Creator<OdcModel> CREATOR = new Creator<OdcModel>() {

@@ -14,6 +14,8 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -35,6 +37,8 @@ import com.perusahaan.fullname.odcfinder.fragment.OdcViewFragment;
 import com.perusahaan.fullname.odcfinder.fragment.ProfileFragment;
 import com.perusahaan.fullname.odcfinder.fragment.SearchFragment;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
@@ -137,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
                         item.setChecked(true);
                         actionBar.setTitle("Home");
                         showSearch = false;
+
                         invalidateOptionsMenu();
                         getSupportFragmentManager()
                                 .beginTransaction()
@@ -148,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
                         item.setChecked(true);
                         actionBar.setTitle("Tentang");
                         showSearch = false;
+
                         invalidateOptionsMenu();
                         getSupportFragmentManager()
                                 .beginTransaction()
@@ -157,28 +163,15 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.menu_list:
                         item.setChecked(true);
-                        actionBar.setTitle("Daftar ODC");
                         showSearch = false;
+
                         invalidateOptionsMenu();
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.frameContent, searchFragment)
                                 .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
-                                .addToBackStack(null)
                                 .commit();
                         break;
-//                    case R.id.menu_search:
-//                        item.setChecked(true);
-//                        actionBar.setTitle("Pencarian...");
-//                        showSearch = false;
-//                        invalidateOptionsMenu();
-//                        getSupportFragmentManager()
-//                                .beginTransaction()
-//                                .replace(R.id.frameContent, searchFragment)
-//                                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
-//                                .addToBackStack(null)
-//                                .commit();
-//                        break;
                     case R.id.menu_profile:
                         item.setChecked(false);
                         invalidateOptionsMenu();
@@ -191,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.menu_logout:
                         item.setChecked(false);
                         invalidateOptionsMenu();
-                        Toast.makeText(getApplicationContext(), "Menu Logout", Toast.LENGTH_SHORT).show();
                         msgYesNo(MainActivity.this, "Yakin?");
                         drawerLayout.closeDrawers();
                         return false;
@@ -217,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.frameContent, homeFragment)
                 .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+                .addToBackStack(null)
                 .commit();
 
     }
@@ -226,9 +219,6 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
-                break;
-            case R.id.toolbar_search:
-                Toast.makeText(getApplicationContext(), "Search", Toast.LENGTH_SHORT).show();
                 break;
         }
 
@@ -255,7 +245,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if(getSupportFragmentManager().getBackStackEntryCount() >= 1) {
+        if(drawerLayout.isShown()) {
+            drawerLayout.closeDrawers();
+        }
+
+        if(getSupportFragmentManager().getBackStackEntryCount() > 1) {
             getSupportFragmentManager().popBackStack();
         } else {
             msgYesNo(MainActivity.this, "Yakin?");
@@ -323,5 +317,19 @@ public class MainActivity extends AppCompatActivity {
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void removeAllFragment() {
+        if(getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            final List<Fragment> fragments = getSupportFragmentManager().getFragments();
+
+            for(int i = 0; fragments.size() > i; i++) {
+                final Fragment fragment = fragments.get(i);
+
+                if(fragment != null) {
+                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                }
+            }
+        }
     }
 }

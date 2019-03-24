@@ -1,18 +1,18 @@
 package com.perusahaan.fullname.odcfinder.adapter;
 
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.perusahaan.fullname.odcfinder.OdcViewActivity;
 import com.perusahaan.fullname.odcfinder.R;
-import com.perusahaan.fullname.odcfinder.Utils.CustomAdapterListener;
 import com.perusahaan.fullname.odcfinder.fragment.OdcViewFragment;
 import com.perusahaan.fullname.odcfinder.model.OdcModel;
 
@@ -69,25 +69,18 @@ public class OdcAdapter extends RecyclerView.Adapter<OdcAdapter.ViewHolder> {
 
         @Override
         public void onClick(View view) {
-            OdcViewFragment odcViewFragment = new OdcViewFragment();
 
             Bundle bundle = new Bundle();
             bundle.putParcelable("odc_item", odcModel);
 
-            odcViewFragment.setArguments(bundle);
-
             AppCompatActivity activity = (AppCompatActivity) view.getContext();
 
-            activity.getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frameContent, odcViewFragment)
-                    .setCustomAnimations(
-                            R.anim.swipe_left,
-                            R.anim.swipe_left_back,
-                            R.anim.swipe_right,
-                            R.anim.swipe_right_back)
-                    .addToBackStack("odc_list")
-                    .commit();
+            Intent intent = new Intent(activity, OdcViewActivity.class);
+            intent.putExtras(bundle);
+
+            activity.startActivity(intent, ActivityOptions
+                    .makeCustomAnimation(activity, R.anim.swipe_left, R.anim.swipe_left_back)
+                    .toBundle());
         }
 
         public OdcModel getOdcModel() {
