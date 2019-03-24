@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -36,6 +37,8 @@ import com.perusahaan.fullname.odcfinder.model.UserModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -188,7 +191,19 @@ public class LoginActivity extends AppCompatActivity {
             prefs.edit().putString(Constant.PREF_USERNAME, userModel.getUsername()).apply();
             prefs.edit().putString(Constant.PREF_NAMA, userModel.getNama()).apply();
             prefs.edit().putString(Constant.PREF_LEVEL, userModel.getLevel()).apply();
-            prefs.edit().putString(Constant.PREF_PROFILE, userModel.getPhoto()).apply();
+
+            try {
+              if(userModel.getPhoto() != null) {
+                  FileOutputStream outputStream = getApplicationContext().openFileOutput("profile.jpg", Context.MODE_PRIVATE);
+                  final byte[] bytes = Base64.decode(userModel.getPhoto(), Base64.DEFAULT);
+                  outputStream.write(bytes);
+                  outputStream.flush();
+                  outputStream.close();
+              }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
 
         startActivity(new Intent(this, MainActivity.class));

@@ -11,6 +11,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -37,7 +38,9 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -189,16 +192,6 @@ public class ProfileActivity extends AppCompatActivity {
                         .load(uri)
                         .resize(1366, 768)
                         .into(imgProfile);
-
-//                try {
-//
-//                    final Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-//                    final Bitmap resizedBitmap = getResizedBitmap(bitmap, 200, 400);
-//                    imgProfile.setImageBitmap(resizedBitmap);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-
             }
         }
     }
@@ -207,10 +200,7 @@ public class ProfileActivity extends AppCompatActivity {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] b = byteArrayOutputStream.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-
-        Log.d("Image Log:", imageEncoded);
-        return imageEncoded;
+        return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
     public static Bitmap decodeToBase64(String input) {
@@ -219,11 +209,21 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadImage() {
-        String savedImage = getPreferences(MODE_PRIVATE).getString(KEYWORD_IMAGE_PROFILE, "");
-        if(!savedImage.equals("")) {
-            final Bitmap bitmap = decodeToBase64(savedImage);
-            imgProfile.setImageBitmap(bitmap);
+        try {
+            final FileInputStream fileInputStream = getApplicationContext().openFileInput("profile.jpg");
+            if(fileInputStream != null) {
+                final Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
+                imgProfile.setImageBitmap(bitmap);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+//        String savedImage = getPreferences(MODE_PRIVATE).getString(KEYWORD_IMAGE_PROFILE, "");
+//        if(!savedImage.equals("")) {
+//            final Bitmap bitmap = decodeToBase64(savedImage);
+//            imgProfile.setImageBitmap(bitmap);
+//        }
     }
 
     private Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
@@ -242,10 +242,22 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void saveEdit() {
         // save to shared preferences
-        BitmapDrawable drawable = (BitmapDrawable) imgProfile.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
-        getPreferences(MODE_PRIVATE).edit()
-                .putString(KEYWORD_IMAGE_PROFILE, encodeToBase64(bitmap))
-                .apply();
+        try {
+            FileOutputStream outputStream = getApplicationContext().openFileOutput("profile.jpg", Context.MODE_PRIVATE);
+
+            BitmapDrawable drawable = (BitmapDrawable) imgProfile.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            outputStream.flush();
+            outputStream.close();
+//            prefs.edit().putString(Constant.PREF_PROFILE, "profile.jpg").apply();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        getPreferences(MODE_PRIVATE).edit()
+//                .putString(KEYWORD_IMAGE_PROFILE, "profile")
+//                .apply();
     }
 }
