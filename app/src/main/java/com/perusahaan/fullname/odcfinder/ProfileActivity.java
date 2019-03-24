@@ -11,6 +11,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -111,6 +112,7 @@ public class ProfileActivity extends AppCompatActivity {
                 return true;
 
             case R.id.toolbar_save:
+                saveEdit();
                 toggleEditButton();
                 editMode = false;
                 invalidateOptionsMenu();
@@ -172,7 +174,13 @@ public class ProfileActivity extends AppCompatActivity {
 
                 final Uri uri = data.getData();
 
-                imgProfile.setImageURI(uri);
+                try {
+                    final Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    final Bitmap resizedBitmap = getResizedBitmap(bitmap, 400, 800);
+                    imgProfile.setImageBitmap(resizedBitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
 //                Picasso.get()
 //                        .load(uri)
@@ -180,13 +188,6 @@ public class ProfileActivity extends AppCompatActivity {
 //                        .into(imgProfile);
             }
         }
-
-        // save to shared preferences
-        BitmapDrawable drawable = (BitmapDrawable) imgProfile.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
-        getPreferences(MODE_PRIVATE).edit()
-                .putString(KEYWORD_IMAGE_PROFILE, encodeToBase64(bitmap))
-                .apply();
     }
 
     public static String encodeToBase64(Bitmap image) {
@@ -223,5 +224,15 @@ public class ProfileActivity extends AppCompatActivity {
         matrix.postScale(scaleWidth, scaleHeight);
 
         return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+    }
+
+
+    private void saveEdit() {
+        // save to shared preferences
+        BitmapDrawable drawable = (BitmapDrawable) imgProfile.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        getPreferences(MODE_PRIVATE).edit()
+                .putString(KEYWORD_IMAGE_PROFILE, encodeToBase64(bitmap))
+                .apply();
     }
 }
