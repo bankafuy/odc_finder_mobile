@@ -185,8 +185,26 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.menu_logout:
                         item.setChecked(false);
                         invalidateOptionsMenu();
-                        msgYesNo(MainActivity.this, "Yakin?");
                         drawerLayout.closeDrawers();
+
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+                        alertDialog.setTitle("Yakin ?")
+                                .setMessage("Apakah anda ingin logout ?")
+                                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        prefs.edit().putBoolean(Constant.PREF_LOGIN, false).apply();
+                                        finish();
+
+                                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                        startActivity(intent, ActivityOptions
+                                                .makeCustomAnimation(MainActivity.this, R.anim.swipe_right, R.anim.swipe_right_back)
+                                                .toBundle());
+                                    }
+                                })
+                                .setNegativeButton("Tidak", null)
+                                .show();
+
                         return false;
                 }
 
@@ -234,15 +252,15 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        prefs.edit().putBoolean(Constant.PREF_LOGIN, false).apply();
-                        finish();
-
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(intent, ActivityOptions
-                                .makeCustomAnimation(MainActivity.this, R.anim.swipe_right, R.anim.swipe_right_back)
-                                .toBundle());
-
-//                        System.exit(0);
+//                      prefs.edit().putBoolean(Constant.PREF_LOGIN, false).apply();
+//                        finish();
+//
+//                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                        startActivity(intent, ActivityOptions
+//                                .makeCustomAnimation(MainActivity.this, R.anim.swipe_right, R.anim.swipe_right_back)
+//                                .toBundle());
+//
+                        System.exit(0);
                     }
                 })
                 .setNegativeButton("Tidak", null)

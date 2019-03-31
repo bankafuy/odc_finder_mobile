@@ -21,12 +21,6 @@
             android:background="@color/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
              />
-        <!--<ScrollView-->
-            <!--android:id="@+id/scrollView"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:fillViewport="true"-->
-            <!--android:layout_weight="1">-->
         <FrameLayout
             android:id="@+id/frameContent"
             android:layout_width="match_parent"

@@ -31,11 +31,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.perusahaan.fullname.odcfinder.Utils.Constant;
+import com.perusahaan.fullname.odcfinder.Utils.MyUtils;
 import com.perusahaan.fullname.odcfinder.databinding.ActivityProfileBinding;
+import com.perusahaan.fullname.odcfinder.model.OdcModel;
 import com.perusahaan.fullname.odcfinder.model.UserModel;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -43,6 +55,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -58,6 +71,8 @@ public class ProfileActivity extends AppCompatActivity {
     private final String KEYWORD_IMAGE_PROFILE = "imgProfile";
 
     private SharedPreferences prefs;
+
+    private final String UPDATE_PROFILE_URL = "";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -256,8 +271,7 @@ public class ProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-//        getPreferences(MODE_PRIVATE).edit()
-//                .putString(KEYWORD_IMAGE_PROFILE, "profile")
-//                .apply();
+        // save to database
+
     }
 }

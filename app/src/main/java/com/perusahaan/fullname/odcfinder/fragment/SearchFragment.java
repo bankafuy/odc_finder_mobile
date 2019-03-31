@@ -116,8 +116,6 @@ public class SearchFragment extends Fragment {
             activity.getSupportActionBar().setTitle("Search");
         }
 
-//        searchView = activity.findViewById(R.id.menu_search);
-
         fetchingJson("");
 
         return view;
