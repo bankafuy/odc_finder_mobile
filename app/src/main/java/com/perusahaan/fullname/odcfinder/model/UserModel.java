@@ -11,13 +11,17 @@ public class UserModel implements Parcelable {
     private Integer id;
     private String username;
     private String nama;
+    private String nik;
+    private String noHp;
     private String level;
     private String photo;
 
-    public UserModel(Integer id, String username, String nama, String level, String photo) {
+    public UserModel(Integer id, String username, String nama, String nik, String noHp,String level, String photo) {
         this.id = id;
         this.username = username;
         this.nama = nama;
+        this.nik = nik;
+        this.noHp = noHp;
         this.level = level;
         this.photo = photo;
     }
@@ -26,6 +30,8 @@ public class UserModel implements Parcelable {
         id = in.readInt();
         username = in.readString();
         nama = in.readString();
+        nik = in.readString();
+        noHp = in.readString();
         level = in.readString();
         photo = in.readString();
     }
@@ -57,6 +63,12 @@ public class UserModel implements Parcelable {
     public String getPhoto() {
         return photo;
     }
+    public String getNik() {
+        return nik;
+    }
+    public String getNoHp() {
+        return noHp;
+    }
 
     public void setId(Integer id) {
         this.id = id;
@@ -73,6 +85,12 @@ public class UserModel implements Parcelable {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
+    public void setNik(String nik) {
+        this.nik = nik;
+    }
+    public void setNoHp(String noHp) {
+        this.noHp = noHp;
+    }
 
     @Override
     public int describeContents() {
@@ -84,6 +102,8 @@ public class UserModel implements Parcelable {
         parcel.writeInt(id);
         parcel.writeString(username);
         parcel.writeString(nama);
+        parcel.writeString(nik);
+        parcel.writeString(noHp);
         parcel.writeString(level);
         parcel.writeString(photo);
     }

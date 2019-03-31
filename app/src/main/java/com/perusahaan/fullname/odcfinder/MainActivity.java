@@ -33,15 +33,9 @@ import com.perusahaan.fullname.odcfinder.Utils.CircleTransformation;
 import com.perusahaan.fullname.odcfinder.Utils.Constant;
 import com.perusahaan.fullname.odcfinder.fragment.AboutFragment;
 import com.perusahaan.fullname.odcfinder.fragment.HomeFragment;
-import com.perusahaan.fullname.odcfinder.fragment.OdcViewFragment;
-import com.perusahaan.fullname.odcfinder.fragment.ProfileFragment;
 import com.perusahaan.fullname.odcfinder.fragment.SearchFragment;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
-import static android.content.DialogInterface.BUTTON_NEGATIVE;
-import static android.content.DialogInterface.BUTTON_POSITIVE;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -125,6 +119,10 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView imgLogo = navigationView.getHeaderView(0).findViewById(R.id.logoDrawer);
 
+        final View txtDrawerHeader = navigationView.getHeaderView(0).findViewById(R.id.txtDrawerHeader);
+        final View txtDrawerDetail = navigationView.getHeaderView(0).findViewById(R.id.txtDrawerDetail);
+        
+
         if(imgLogo != null) {
             Picasso.get()
                     .load(R.drawable.img_profile)
@@ -141,6 +139,8 @@ public class MainActivity extends AppCompatActivity {
                         item.setChecked(true);
                         actionBar.setTitle("Home");
                         showSearch = false;
+
+                        checkPermissionAndEnableIt();
 
                         invalidateOptionsMenu();
                         getSupportFragmentManager()
@@ -263,10 +263,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setTitleBar(String title) {
-        this.actionBar.setTitle(title);
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -305,7 +301,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             buildAlertMessageNoGps();
         }
-
     }
 
     private void buildAlertMessageNoGps() {
@@ -326,17 +321,4 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
-    private void removeAllFragment() {
-        if(getSupportFragmentManager().getBackStackEntryCount() > 1) {
-            final List<Fragment> fragments = getSupportFragmentManager().getFragments();
-
-            for(int i = 0; fragments.size() > i; i++) {
-                final Fragment fragment = fragments.get(i);
-
-                if(fragment != null) {
-                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                }
-            }
-        }
-    }
 }

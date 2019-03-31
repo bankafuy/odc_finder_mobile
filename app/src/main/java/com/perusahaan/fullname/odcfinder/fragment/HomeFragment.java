@@ -71,7 +71,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         mapView = view.findViewById(R.id.mapView);
 
         mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this);
 
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
 
@@ -107,6 +106,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     public void onResume() {
         super.onResume();
         mapView.onResume();
+        mapView.getMapAsync(this);
     }
 
     @Override
@@ -126,12 +126,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
 
         this.googleMap.setMyLocationEnabled(true);
-        // this.googleMap.setMaxZoomPreference(15);
 
         // set default to kota serang
         LatLng serangLatLng = new LatLng(-6.1149f, 106.1502f);
         this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(serangLatLng, 15f));
-//        this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(serangLatLng));
 
         LocationManager service = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
 

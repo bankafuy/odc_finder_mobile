@@ -140,11 +140,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         if(user == null) {
             final String username = prefs.getString(Constant.PREF_USERNAME, "-");
-            final String nama = prefs.getString(Constant.PREF_NAMA, "-");
+            final String nama = prefs.getString(Constant.PREF_NAME, "-");
             final String profile = prefs.getString(Constant.PREF_PROFILE, "-");
             final String level = prefs.getString(Constant.PREF_LEVEL, "-");
 
-            user = new UserModel(null, username, nama, null, profile);
+            user = new UserModel(null, username, nama, null, profile, level, null);
             binding.setUserModel(user);
         }
 

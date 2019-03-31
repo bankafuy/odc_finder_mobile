@@ -37,12 +37,8 @@ import com.perusahaan.fullname.odcfinder.model.UserModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 
 public class LoginActivity extends AppCompatActivity {
     @Override
@@ -140,12 +136,14 @@ public class LoginActivity extends AppCompatActivity {
                                 try {
                                     JSONObject jsonObject = new JSONObject(response);
                                     String username = jsonObject.getString("username");
-                                    String nama = jsonObject.getString("nama");
+                                    String nama = jsonObject.getString("nama_lengkap");
+                                    String nik = jsonObject.getString("nik");
+                                    String no_hp = jsonObject.getString("no_hp");
                                     String level = jsonObject.getString("level");
                                     String photo = jsonObject.getString("photo");
 
 
-                                    UserModel userModel = new UserModel(null, username, nama, level, photo);
+                                    UserModel userModel = new UserModel(null, username, nama, nik, no_hp, level, photo);
 
                                     onSuccess(userModel);
 
@@ -189,7 +187,9 @@ public class LoginActivity extends AppCompatActivity {
 
         if(userModel != null) {
             prefs.edit().putString(Constant.PREF_USERNAME, userModel.getUsername()).apply();
-            prefs.edit().putString(Constant.PREF_NAMA, userModel.getNama()).apply();
+            prefs.edit().putString(Constant.PREF_NAME, userModel.getNama()).apply();
+            prefs.edit().putString(Constant.PREF_NIK, userModel.getNik()).apply();
+            prefs.edit().putString(Constant.PREF_NO_HP, userModel.getNoHp()).apply();
             prefs.edit().putString(Constant.PREF_LEVEL, userModel.getLevel()).apply();
 
             try {
