@@ -154,12 +154,15 @@ public class ProfileActivity extends AppCompatActivity {
         prefs = this.getSharedPreferences("com.perusahaan.fullname.odcfinder", Context.MODE_PRIVATE);
 
         if(user == null) {
+            final Integer id = prefs.getInt(Constant.PREF_ID, 0);
             final String username = prefs.getString(Constant.PREF_USERNAME, "-");
             final String nama = prefs.getString(Constant.PREF_NAME, "-");
+            final String nik = prefs.getString(Constant.PREF_NIK, "-");
+            final String noHp = prefs.getString(Constant.PREF_NO_HP, "-");
             final String profile = prefs.getString(Constant.PREF_PROFILE, "-");
             final String level = prefs.getString(Constant.PREF_LEVEL, "-");
 
-            user = new UserModel(null, username, nama, null, profile, level, null);
+            user = new UserModel(id, username, nama, nik, noHp, level, profile);
             binding.setUserModel(user);
         }
 
@@ -272,6 +275,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         // save to database
+
 
     }
 }

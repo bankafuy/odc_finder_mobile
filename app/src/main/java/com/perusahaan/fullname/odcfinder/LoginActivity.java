@@ -120,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             MyUtils.showSimpleProgressDialog(this, "Mencoba login...", "Harap bersabar...");
 
-            JSONObject jsonBody = new JSONObject();
+            final JSONObject jsonBody = new JSONObject();
             jsonBody.put("username", txtUsername.getText().toString());
             jsonBody.put("password", txtPassword.getText().toString());
             final String requestBody = jsonBody.toString();
@@ -135,6 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 try {
                                     JSONObject jsonObject = new JSONObject(response);
+                                    Integer id = jsonObject.getInt("id");
                                     String username = jsonObject.getString("username");
                                     String nama = jsonObject.getString("nama_lengkap");
                                     String nik = jsonObject.getString("nik");
@@ -143,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                                     String photo = jsonObject.getString("photo");
 
 
-                                    UserModel userModel = new UserModel(null, username, nama, nik, no_hp, level, photo);
+                                    UserModel userModel = new UserModel(id, username, nama, nik, no_hp, level, photo);
 
                                     onSuccess(userModel);
 
@@ -186,6 +187,7 @@ public class LoginActivity extends AppCompatActivity {
         prefs.edit().putBoolean(Constant.PREF_LOGIN, true).apply();
 
         if(userModel != null) {
+            prefs.edit().putInt(Constant.PREF_ID, userModel.getId()).apply();
             prefs.edit().putString(Constant.PREF_USERNAME, userModel.getUsername()).apply();
             prefs.edit().putString(Constant.PREF_NAME, userModel.getNama()).apply();
             prefs.edit().putString(Constant.PREF_NIK, userModel.getNik()).apply();

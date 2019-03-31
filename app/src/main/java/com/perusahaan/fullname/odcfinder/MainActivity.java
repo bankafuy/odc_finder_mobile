@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.LocationManager;
 import android.os.PersistableBundle;
@@ -26,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -35,6 +38,10 @@ import com.perusahaan.fullname.odcfinder.fragment.AboutFragment;
 import com.perusahaan.fullname.odcfinder.fragment.HomeFragment;
 import com.perusahaan.fullname.odcfinder.fragment.SearchFragment;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
+
+import java.io.FileInputStream;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -119,15 +126,28 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView imgLogo = navigationView.getHeaderView(0).findViewById(R.id.logoDrawer);
 
-        final View txtDrawerHeader = navigationView.getHeaderView(0).findViewById(R.id.txtDrawerHeader);
-        final View txtDrawerDetail = navigationView.getHeaderView(0).findViewById(R.id.txtDrawerDetail);
-        
+        final TextView txtDrawerHeader = navigationView.getHeaderView(0).findViewById(R.id.txtDrawerHeader);
+        final TextView txtDrawerDetail = navigationView.getHeaderView(0).findViewById(R.id.txtDrawerDetail);
+
+        txtDrawerHeader.setText(prefs.getString(Constant.PREF_NAME, ""));
+        txtDrawerDetail.setText(prefs.getString(Constant.PREF_NIK, ""));
+        txtDrawerDetail.setText(prefs.getString(Constant.PREF_NIK, ""));
 
         if(imgLogo != null) {
-            Picasso.get()
-                    .load(R.drawable.img_profile)
-                    .transform(new CircleTransformation())
-                    .into(imgLogo);
+            try {
+                final FileInputStream fileInputStream = getApplicationContext().openFileInput("profile.jpg");
+                if(fileInputStream != null) {
+                    final Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
+                    imgLogo.setImageBitmap(bitmap);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+//            Picasso.get()
+//                    .load(R.drawable.img_profile)
+//                    .transform(new CircleTransformation())
+//                    .into(imgLogo);
         }
 
 
