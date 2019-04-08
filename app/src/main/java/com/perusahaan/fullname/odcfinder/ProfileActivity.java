@@ -31,10 +31,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.perusahaan.fullname.odcfinder.Utils.Constant;
@@ -55,6 +57,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -72,7 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private SharedPreferences prefs;
 
-    private final String UPDATE_PROFILE_URL = "";
+    private final String UPDATE_PROFILE_URL = "http://khotibul.herokuapp.com/users/";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -135,6 +138,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             case R.id.toolbar_save:
                 saveEdit();
+                updateData(ProfileActivity.this);
                 toggleEditButton();
                 editMode = false;
                 invalidateOptionsMenu();
@@ -274,8 +278,77 @@ public class ProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // save to database
+    }
+
+    private void updateData(final Context context) {
+        try {
+            MyUtils.showSimpleProgressDialog(this, "Saving data...", "Harap bersabar...");
+
+            final JSONObject jsonBody = new JSONObject();
+            jsonBody.put("id", user.getId());
+            jsonBody.put("username", user.getUsername());
+            jsonBody.put("photo", user.getPhoto());
+            jsonBody.put("level", user.getLevel());
+            jsonBody.put("nama", user.getNama());
+            jsonBody.put("nik", user.getNik());
+            jsonBody.put("no_hp", user.getNoHp());
+
+            final String requestBody = jsonBody.toString();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.PUT, UPDATE_PROFILE_URL + user.getId(),
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            MyUtils.removeSimpleProgressDialog();
+                            if (response == null) {
+                                Toast.makeText(context, "Update data Failed.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    Integer id = jsonObject.getInt("id");
+                                    String username = jsonObject.getString("username");
+                                    String nama = jsonObject.getString("nama_lengkap");
+                                    String nik = jsonObject.getString("nik");
+                                    String no_hp = jsonObject.getString("no_hp");
+                                    String level = jsonObject.getString("level");
+                                    String photo = jsonObject.getString("photo");
 
 
+                                    user = new UserModel(id, username, nama, nik, no_hp, level, photo);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    MyUtils.removeSimpleProgressDialog();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }) {
+
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+            };
+
+            RequestQueue requestQueue = Volley.newRequestQueue(context);
+            requestQueue.add(stringRequest);
+        } catch (Exception e) {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }
