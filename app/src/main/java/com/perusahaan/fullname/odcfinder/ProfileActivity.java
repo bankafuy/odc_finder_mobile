@@ -15,6 +15,7 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -63,15 +65,13 @@ import java.util.LinkedList;
 public class ProfileActivity extends AppCompatActivity {
 
     private UserModel user;
-    private EditText txtName;
+    private EditText txtName, txtNik, txtNoHp, txtUsername;
     private FloatingActionButton floatingActionButton;
     private ImageView imgProfile;
 
     private boolean editMode;
 
     private final int CHOOSE_IMAGE = 666;
-
-    private final String KEYWORD_IMAGE_PROFILE = "imgProfile";
 
     private SharedPreferences prefs;
 
@@ -94,13 +94,13 @@ public class ProfileActivity extends AppCompatActivity {
         menuEdit.setVisible(!editMode);
 
         return true;
-//        return super.onPrepareOptionsMenu(menu);
     }
 
     private void toggleEditButton() {
         txtName.setEnabled(!txtName.isEnabled());
+        txtNoHp.setEnabled(!txtNoHp.isEnabled());
 
-        if(txtName.isEnabled()) {
+        if(txtName.isEnabled() || txtNoHp.isEnabled()) {
             txtName.requestFocus();
             floatingActionButton.setVisibility(View.VISIBLE);
         } else {
@@ -151,7 +151,6 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_profile);
 
         ActivityProfileBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_profile);
 
@@ -182,6 +181,9 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         txtName = findViewById(R.id.txtProfileName);
+        txtNik = findViewById(R.id.txtNik);
+        txtUsername = findViewById(R.id.txtUsername);
+        txtNoHp = findViewById(R.id.txtNoHp);
         imgProfile = findViewById(R.id.imgProfile);
 
         loadImage();
@@ -240,12 +242,6 @@ public class ProfileActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-//        String savedImage = getPreferences(MODE_PRIVATE).getString(KEYWORD_IMAGE_PROFILE, "");
-//        if(!savedImage.equals("")) {
-//            final Bitmap bitmap = decodeToBase64(savedImage);
-//            imgProfile.setImageBitmap(bitmap);
-//        }
     }
 
     private Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
@@ -273,6 +269,12 @@ public class ProfileActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             outputStream.flush();
             outputStream.close();
+
+            // set to user model
+            final String profileBase64 = encodeToBase64(bitmap);
+            user.setPhoto(profileBase64);
+            user.setNoHp(txtNoHp.getText().toString());
+            user.setNama(txtName.getText().toString());
 //            prefs.edit().putString(Constant.PREF_PROFILE, "profile.jpg").apply();
         } catch (Exception e) {
             e.printStackTrace();
@@ -312,7 +314,6 @@ public class ProfileActivity extends AppCompatActivity {
                                     String no_hp = jsonObject.getString("no_hp");
                                     String level = jsonObject.getString("level");
                                     String photo = jsonObject.getString("photo");
-
 
                                     user = new UserModel(id, username, nama, nik, no_hp, level, photo);
 

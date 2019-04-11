@@ -16,8 +16,6 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -32,19 +30,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.perusahaan.fullname.odcfinder.Utils.CircleTransformation;
 import com.perusahaan.fullname.odcfinder.Utils.Constant;
 import com.perusahaan.fullname.odcfinder.fragment.AboutFragment;
 import com.perusahaan.fullname.odcfinder.fragment.HomeFragment;
+import com.perusahaan.fullname.odcfinder.fragment.ProfileFragment;
 import com.perusahaan.fullname.odcfinder.fragment.SearchFragment;
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.io.FileInputStream;
 
 
 public class MainActivity extends AppCompatActivity {
+    private DrawerLayout drawerLayout;
+    private ActionBar actionBar;
+
+    private boolean showSearch = false;
+    private boolean showProfile = false;
+    private SharedPreferences prefs;
+    private ImageView imgLogo;
+    private TextView txtDrawerHeader, txtDrawerDetail;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -57,20 +61,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         checkPermissionAndEnableIt();
+
+        updateNavbarInfo();
     }
-
-    private DrawerLayout drawerLayout;
-    private ActionBar actionBar;
-
-    private boolean showSearch = false;
-    private SharedPreferences prefs;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (showSearch) {
-            getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        }
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -121,35 +117,14 @@ public class MainActivity extends AppCompatActivity {
         final SearchFragment searchFragment = new SearchFragment();
         final HomeFragment homeFragment = new HomeFragment();
         final AboutFragment aboutFragment = new AboutFragment();
+        final ProfileFragment profileFragment = new ProfileFragment();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
 
-        ImageView imgLogo = navigationView.getHeaderView(0).findViewById(R.id.logoDrawer);
+        imgLogo = navigationView.getHeaderView(0).findViewById(R.id.logoDrawer);
 
-        final TextView txtDrawerHeader = navigationView.getHeaderView(0).findViewById(R.id.txtDrawerHeader);
-        final TextView txtDrawerDetail = navigationView.getHeaderView(0).findViewById(R.id.txtDrawerDetail);
-
-        txtDrawerHeader.setText(prefs.getString(Constant.PREF_NAME, ""));
-        txtDrawerDetail.setText(prefs.getString(Constant.PREF_NIK, ""));
-        txtDrawerDetail.setText(prefs.getString(Constant.PREF_NIK, ""));
-
-        if(imgLogo != null) {
-            try {
-                final FileInputStream fileInputStream = getApplicationContext().openFileInput("profile.jpg");
-                if(fileInputStream != null) {
-                    final Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
-                    imgLogo.setImageBitmap(bitmap);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-//            Picasso.get()
-//                    .load(R.drawable.img_profile)
-//                    .transform(new CircleTransformation())
-//                    .into(imgLogo);
-        }
-
+        txtDrawerHeader = navigationView.getHeaderView(0).findViewById(R.id.txtDrawerHeader);
+        txtDrawerDetail = navigationView.getHeaderView(0).findViewById(R.id.txtDrawerDetail);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -158,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.menu_home:
                         item.setChecked(true);
                         actionBar.setTitle("Home");
+                        showProfile = false;
                         showSearch = false;
 
                         checkPermissionAndEnableIt();
@@ -172,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.menu_about:
                         item.setChecked(true);
                         actionBar.setTitle("Tentang");
+                        showProfile = false;
                         showSearch = false;
 
                         invalidateOptionsMenu();
@@ -183,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.menu_list:
                         item.setChecked(true);
+                        showProfile = false;
                         showSearch = false;
 
                         invalidateOptionsMenu();
@@ -194,16 +172,20 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.menu_profile:
                         item.setChecked(false);
+                        showSearch = false;
+                        showProfile = true;
                         invalidateOptionsMenu();
 
-                        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                        startActivity(intent, ActivityOptions
-                                .makeCustomAnimation(MainActivity.this, R.anim.swipe_left, R.anim.swipe_left_back)
-                                .toBundle());
-                        drawerLayout.closeDrawers();
-                        return false;
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.frameContent, profileFragment)
+                                .setCustomAnimations(R.anim.swipe_right, R.anim.swipe_right_back)
+                                .commit();
+                        break;
                     case R.id.menu_logout:
                         item.setChecked(false);
+                        showProfile = false;
+                        showSearch = false;
                         invalidateOptionsMenu();
                         drawerLayout.closeDrawers();
 
@@ -357,6 +339,23 @@ public class MainActivity extends AppCompatActivity {
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void updateNavbarInfo() {
+        txtDrawerHeader.setText(prefs.getString(Constant.PREF_NAME, ""));
+        txtDrawerDetail.setText(prefs.getString(Constant.PREF_NIK, ""));
+
+        if(imgLogo != null) {
+            try {
+                final FileInputStream fileInputStream = getApplicationContext().openFileInput("profile.jpg");
+                if(fileInputStream != null) {
+                    final Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
+                    imgLogo.setImageBitmap(bitmap);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

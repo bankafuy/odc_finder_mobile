@@ -1,12 +1,145 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.perusahaan.fullname.odcfinder.fragment.ProfileFragment">
-
-    <TextView
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="userModel"
+            type="com.perusahaan.fullname.odcfinder.model.UserModel">
+        </variable>
+    </data>
+    <FrameLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Profile Fragment." />
+        android:fitsSystemWindows="false">
 
-</FrameLayout>
+        <ScrollView
+            android:id="@+id/profileScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <LinearLayout
+                android:id="@+id/profileLinearView"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@drawable/img_profile"
+                    android:scaleType="fitXY"
+                    android:contentDescription="@string/about" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:textColorHint="@color/colorPrimary"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:enabled="false"
+                        android:id="@+id/txtNik"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/colorPrimary"
+                        android:textColor="@color/colorPrimary"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:hint="@string/prompt_nik"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text="@{userModel.nik}"
+                        android:singleLine="true"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:textColorHint="@color/colorPrimary"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:enabled="false"
+                        android:id="@+id/txtProfileUsername"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/colorPrimary"
+                        android:textColor="@color/colorPrimary"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:hint="@string/prompt_username"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text="@{userModel.username}"
+                        android:singleLine="true"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:textColorHint="@color/colorPrimary"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:enabled="true"
+                        android:id="@+id/txtProfileName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_name"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text="@{userModel.nama}"
+                        android:selectAllOnFocus="true"
+                        android:textColorHint="@color/colorPrimary"
+                        android:textColor="@color/colorPrimary"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:textColorHint="@color/colorPrimary"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:enabled="true"
+                        android:id="@+id/txtNoHp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_no_hp"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:text="@{userModel.noHp}"
+                        android:selectAllOnFocus="true"
+                        android:textColorHint="@color/colorPrimary"
+                        android:textColor="@color/colorPrimary"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:backgroundTint="#ffff"
+            android:layout_gravity="top|end"
+            android:layout_margin="16dp"
+            app:srcCompat="@drawable/ic_camera_alt_black_24dp"
+            android:focusable="true" />
+
+
+    </FrameLayout>
+
+</layout>

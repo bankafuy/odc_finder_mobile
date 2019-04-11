@@ -26,5 +26,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="token_fake_json">O96n4fneUTZmwhtKuZUBpQ</string>
+    <string name="prompt_nik">Nik</string>
+    <string name="prompt_no_hp">No Hp</string>
 
 </resources>
