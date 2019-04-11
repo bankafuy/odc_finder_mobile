@@ -38,6 +38,8 @@ import com.perusahaan.fullname.odcfinder.fragment.SearchFragment;
 
 import java.io.FileInputStream;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean showSearch = false;
     private boolean showProfile = false;
     private SharedPreferences prefs;
-    private ImageView imgLogo;
+    private CircleImageView imgLogo;
     private TextView txtDrawerHeader, txtDrawerDetail;
 
     @Override

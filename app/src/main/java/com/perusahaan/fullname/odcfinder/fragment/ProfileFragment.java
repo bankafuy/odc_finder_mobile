@@ -56,6 +56,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static android.app.Activity.RESULT_OK;
 
 
@@ -73,7 +75,7 @@ public class ProfileFragment extends Fragment {
     private FloatingActionButton floatingActionButton;
     private EditText txtName, txtNik, txtNoHp, txtUsername;
     private final int CHOOSE_IMAGE = 666;
-    private ImageView imgProfile;
+    private CircleImageView imgProfile;
 
     public ProfileFragment() {
     }

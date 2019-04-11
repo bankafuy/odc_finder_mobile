@@ -8,10 +8,12 @@
     android:orientation="vertical"
     android:gravity="bottom">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/logoDrawer"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_profile"
         android:layout_marginBottom="16dp"
         />
     <TextView
