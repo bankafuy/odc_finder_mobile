@@ -13,7 +13,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -26,6 +28,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -247,6 +250,7 @@ public class ProfileFragment extends Fragment {
             user.setNoHp(txtNoHp.getText().toString());
             user.setNama(txtName.getText().toString());
 //            prefs.edit().putString(Constant.PREF_PROFILE, "profile.jpg").apply();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -303,6 +307,31 @@ public class ProfileFragment extends Fragment {
                                     prefs.edit().putString(Constant.PREF_NO_HP, user.getNoHp()).apply();
                                     prefs.edit().putString(Constant.PREF_LEVEL, user.getLevel()).apply();
 
+                                    // update drawer
+
+                                    final NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
+
+                                    ImageView imgLogo = navigationView.getHeaderView(0).findViewById(R.id.logoDrawer);
+
+                                    TextView txtDrawerHeader = navigationView.getHeaderView(0).findViewById(R.id.txtDrawerHeader);
+                                    TextView txtDrawerDetail = navigationView.getHeaderView(0).findViewById(R.id.txtDrawerDetail);
+
+                                    txtDrawerHeader.setText(prefs.getString(Constant.PREF_NAME, ""));
+                                    txtDrawerDetail.setText(prefs.getString(Constant.PREF_NIK, ""));
+
+                                    if(imgLogo != null) {
+                                        try {
+                                            final FileInputStream fileInputStream = getContext().openFileInput("profile.jpg");
+                                            if(fileInputStream != null) {
+                                                final Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
+                                                imgLogo.setImageBitmap(bitmap);
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                    Toast.makeText(context, "Data updated!", Toast.LENGTH_SHORT).show();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
