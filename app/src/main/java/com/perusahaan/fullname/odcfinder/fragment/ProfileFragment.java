@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +77,7 @@ public class ProfileFragment extends Fragment {
     private EditText txtName, txtNik, txtNoHp, txtUsername;
     private final int CHOOSE_IMAGE = 666;
     private CircleImageView imgProfile;
+    private LinearLayout linearLayout;
 
     public ProfileFragment() {
     }
@@ -129,6 +131,12 @@ public class ProfileFragment extends Fragment {
     private void toggleEditTextBox(boolean edit) {
         txtName.setEnabled(edit);
         txtNoHp.setEnabled(edit);
+
+        if(edit) {
+            txtName.requestFocus();
+        } else {
+            linearLayout.requestFocus();
+        }
     }
 
     @Override
@@ -159,7 +167,7 @@ public class ProfileFragment extends Fragment {
 
     public String encodeToBase64(Bitmap image) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        //image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] b = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(b, Base64.DEFAULT);
     }
@@ -183,6 +191,8 @@ public class ProfileFragment extends Fragment {
         if (activity.getSupportActionBar() != null) {
             activity.getSupportActionBar().setTitle("Your Profile");
         }
+
+        linearLayout = view.findViewById(R.id.profileLinearView);
 
         txtName = view.findViewById(R.id.txtProfileName);
         txtNik = view.findViewById(R.id.txtNik);
