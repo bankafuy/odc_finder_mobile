@@ -99,9 +99,7 @@ public class ProfileFragment extends Fragment {
                 saveEdit();
                 updateData(getContext());
                 editMode = false;
-
-                Toast.makeText(getContext(), "Save !", Toast.LENGTH_SHORT).show();
-                editMode = false;
+                toggleEditTextBox(false);
                 getActivity().invalidateOptionsMenu();
                 floatingActionButton.setVisibility(View.GONE);
                 return true;
@@ -112,8 +110,8 @@ public class ProfileFragment extends Fragment {
         menuEdit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                Toast.makeText(getContext(), "Edit !", Toast.LENGTH_SHORT).show();
                 editMode = true;
+                toggleEditTextBox(true);
                 getActivity().invalidateOptionsMenu();
                 floatingActionButton.setVisibility(View.VISIBLE);
                 return true;
@@ -123,6 +121,10 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    private void toggleEditTextBox(boolean edit) {
+        txtName.setEnabled(edit);
+        txtNoHp.setEnabled(edit);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -150,9 +152,9 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    public static String encodeToBase64(Bitmap image) {
+    public String encodeToBase64(Bitmap image) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        //image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] b = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(b, Base64.DEFAULT);
     }
@@ -291,6 +293,15 @@ public class ProfileFragment extends Fragment {
                                     String photo = jsonObject.getString("photo");
 
                                     user = new UserModel(id, username, nama, nik, no_hp, level, photo);
+
+                                    // save to prefs
+
+                                    prefs.edit().putInt(Constant.PREF_ID, user.getId()).apply();
+                                    prefs.edit().putString(Constant.PREF_USERNAME, user.getUsername()).apply();
+                                    prefs.edit().putString(Constant.PREF_NAME, user.getNama()).apply();
+                                    prefs.edit().putString(Constant.PREF_NIK, user.getNik()).apply();
+                                    prefs.edit().putString(Constant.PREF_NO_HP, user.getNoHp()).apply();
+                                    prefs.edit().putString(Constant.PREF_LEVEL, user.getLevel()).apply();
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
