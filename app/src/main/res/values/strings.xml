@@ -10,7 +10,7 @@
     <string name="home">Beranda</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDwAYkPssy2f_E1QFoiigveZdwPabY5fdY</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false"></string>
     <string name="title_activity_login">Login</string>
 
     <!-- Strings Profile -->
@@ -25,7 +25,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
-    <string name="token_fake_json">O96n4fneUTZmwhtKuZUBpQ</string>
+    <string name="token_fake_json"></string>
     <string name="prompt_nik">Nik</string>
     <string name="prompt_no_hp">No Hp</string>
 
